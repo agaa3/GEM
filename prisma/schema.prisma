@@ -1,0 +1,40 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:database.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Game {
+    id    Int     @id @default(autoincrement())
+    name  String
+    logo  String @default("marcin")
+    characterImage String
+    characterImage2 String  @default("Default Image")
+    description String
+    description2 String @default("Default Description")
+    youtubeLink String @default("robert")
+
+    comments Comment[]
+    votes Vote[]
+}
+
+model Comment {
+  id    Int     @id @default(autoincrement())
+  name  String
+  comment String
+
+  game Game @relation(fields: [gameId], references: [id])
+  gameId Int
+}
+
+model Vote {
+  id    Int     @id @default(autoincrement())
+
+  game Game @relation(fields: [gameId], references: [id])
+  gameId Int
+}
+
+

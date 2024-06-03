@@ -88,3 +88,34 @@ a:hover {
 .bg-beige {
     background-color: #f5e6c8;
 }
+
+.bg-dark-beige {
+    background-color: #E7D0A5;
+}
+
+.bg-green {
+    background-color: #25371f;
+}
+
+.text-green {
+    color: #25371f;
+}
+
+.text-green:hover {
+    color: #7F6E4D;
+}
+
+.text-green-p {
+    color: #25371f;
+}
+.text-green-p::placeholder {
+    color: #7F6E4D;
+}
+
+.text-beige {
+    color: #f5e6c8;
+}
+
+.text-brown {
+    color: #7F6E4D;
+}

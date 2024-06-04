@@ -89,6 +89,10 @@ a:hover {
     background-color: #f5e6c8;
 }
 
+.bg-brown {
+    background-color: #7F6E4D;
+}
+
 .bg-dark-beige {
     background-color: #E7D0A5;
 }
@@ -103,6 +107,10 @@ a:hover {
 
 .text-green:hover {
     color: #7F6E4D;
+}
+
+.text-green-b {
+    color: #25371f;
 }
 
 .text-green-p {

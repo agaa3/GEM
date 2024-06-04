@@ -81,7 +81,7 @@ export default function NavBar() {
                 </svg>
               </button>
               <div className="absolute top-full right-0 hidden bg-beige rounded-md border border-green-950 shadow-lg group-hover:block z-50">
-                <Link href="/history" className="block px-4 py-2 text-green">Historia transakcji</Link>
+                <Link href="/comps/history" className="block px-4 py-2 text-green">Historia transakcji</Link>
                 <button onClick={handleLogout} className="block w-full text-left px-4 py-2 text-black hover:bg-gray-100">Wyloguj</button>
               </div>
 
@@ -95,36 +95,36 @@ export default function NavBar() {
         </div>
       </div>
 
-      <nav className="bg-light-beige py-2">
+      <nav className="bg-beige py-2">
         <div className="container mx-auto flex justify-around">
           <div className="relative group">
-            <Link href="/games" className="flex items-center px-25 text-green">
+            <Link href="/comps/games" className="flex items-center px-15 text-xl text-green">
               Gry
               <svg className="w-4 h-4 mr-1 text-green" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
               </svg>
             </Link>
             <div className="absolute top-full left-0 hidden bg-beige rounded-md border border-green-950 shadow-lg group-hover:block" style={{ width: '150px' }}>
-              <Link href="/games/category1" className="block px-4 py-2 text-green">Kategoria 1</Link>
-              <Link href="/games/category2" className="block px-4 py-2 text-green">Kategoria 2</Link>
-              <Link href="/games/category3" className="block px-4 py-2 text-green">Kategoria 3</Link>
+              <Link href="/comps/games/1" className="block px-4 py-2 text-green">Kategoria 1</Link>
+              <Link href="/comps/games/2" className="block px-4 py-2 text-green">Kategoria 2</Link>
+              <Link href="/comps/games/3" className="block px-4 py-2 text-green">Kategoria 3</Link>
             </div>
 
 
           </div>
-          <Link href="/ebooks" className="px-15 text-green">Ebooki</Link>
-          <Link href="/music" className="px-15 text-green">Muzyka</Link>
-          <Link href="/subscriptions" className="px-15 text-green">Subskrypcje</Link>
+          <Link href="/comps/ebooks" className="px-15 text-xl text-green">Ebooki</Link>
+          <Link href="/comps/music" className="px-15 text-xl text-green">Muzyka</Link>
+          <Link href="/comps/subscriptions" className="px-15 text-xl text-green">Subskrypcje</Link>
           <div className="relative group">
-            <Link href="/about" className="flex items-center px-15 text-green">
+            <Link href="/comps/about" className="flex items-center px-15 text-xl text-green">
               O nas 
               <svg className="w-4 h-4 mr-1 text-green" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
               </svg>
             </Link>
             <div className="absolute top-full right-0 hidden bg-beige rounded-md border border-green-950 shadow-lg group-hover:block" style={{ width: '150px' }}>
-              <Link href="/about/how-it-works" className="block px-4 py-2 text-green">Jak to działa?</Link>
-              <Link href="/about/contact" className="block px-4 py-2 text-green">Kontakt</Link>
+              <Link href="/comps/about/how-it-works" className="block px-4 py-2 text-green">Jak to działa?</Link>
+              <Link href="/comps/about/contact" className="block px-4 py-2 text-green">Kontakt</Link>
             </div>
           </div>
         </div>

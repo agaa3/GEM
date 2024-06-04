@@ -7,6 +7,14 @@ generator client {
   provider = "prisma-client-js"
 }
 
+model Product {
+    id Int        @id @default(autoincrement())
+    author String
+    title String
+    category String
+    price Int
+}
+
 model Game {
     id    Int     @id @default(autoincrement())
     name  String

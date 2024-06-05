@@ -47,23 +47,21 @@ export default function NavBar() {
 
   return (
     <header className={`fixed top-0 left-0 z-50 w-full bg-beige transition-opacity duration-300 ${isVisible ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
-      <div className="container mx-auto flex justify-between items-center bg-green py-4 px-6">
+      <div className="w-full flex justify-between items-center bg-green py-4 px-6">
         <Link href='/'>
-          <div className='relative w-32 h-10'>
+          <div className='relative w-48 h-16 ml-6'>
             <Image fill src='/photos/logo_gem.png' alt='GEM Logo' sizes='100vw' />
           </div>
         </Link>
 
-        <div className="flex items-center w-1/2 max-w-md">
-          <input type="text" placeholder="Na co masz dziś ochotę?..." className="w-full bg-beige text-green-p px-4 py-2 border border-green-950 rounded-full"/>
-          <button className="ml-2">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-beige" fill="none" viewBox="0 0 24 24" stroke="#f5e6c8">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
-          </button>
+        <div className="flex items-center w-3/4 max-w-lg relative">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-beige absolute left-3 top-2" fill="none" viewBox="0 0 24 24" stroke="#f5e6c8">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="4" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+          <input type="text" placeholder="Na co masz dziś ochotę?..." className="w-full bg-transparent text-beige pl-12 pr-4 py-2 border-b-4 border-beige focus:outline-none focus:border-beige"/>
         </div>
 
-        <div className="flex items-center space-x-6">
+        <div className="flex items-center space-x-6 mr-6">
           {user ? (
             <div className="relative group">
               <button className="flex items-center space-x-2 focus:outline-none text-beige">
@@ -95,8 +93,8 @@ export default function NavBar() {
         </div>
       </div>
 
-      <nav className="bg-beige py-2">
-        <div className="container mx-auto flex justify-around">
+      <nav className="bg-beige py-4">
+        <div className="w-full flex justify-around">
           <div className="relative group">
             <Link href="/comps/games" className="flex items-center px-15 text-xl text-green">
               Gry
@@ -109,8 +107,6 @@ export default function NavBar() {
               <Link href="/comps/games/2" className="block px-4 py-2 text-green">Kategoria 2</Link>
               <Link href="/comps/games/3" className="block px-4 py-2 text-green">Kategoria 3</Link>
             </div>
-
-
           </div>
           <Link href="/comps/ebooks" className="px-15 text-xl text-green">Ebooki</Link>
           <Link href="/comps/music" className="px-15 text-xl text-green">Muzyka</Link>
@@ -130,5 +126,6 @@ export default function NavBar() {
         </div>
       </nav>
     </header>
+
   );
 }

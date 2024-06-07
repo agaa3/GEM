@@ -89,6 +89,18 @@ a:hover {
     background-color: #f5e6c8;
 }
 
+.bg-album {
+    background-color: #5d98ab;
+}
+
+.bg-gra {
+    background-color: #a46788;
+}
+
+.bg-book {
+    background-color: #11986f;
+}
+
 .bg-brown {
     background-color: #7F6E4D;
 }

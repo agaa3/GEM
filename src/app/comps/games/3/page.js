@@ -20,7 +20,7 @@ export default function Page({ params }) {
     useEffect(() => {
         (async () => {
 
-            const req = await fetch(`http://localhost:3000/api/product/games`)
+            const req = await fetch(`http://localhost:3000/api/product/games/3`)
             const res = await req.json()
 
             setProductsInfo(res.product)

@@ -1,5 +1,8 @@
 'use client'
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation'
+
 import Link from 'next/link';
 import Image from 'next/image';
 import { FaUser } from 'react-icons/fa';
@@ -8,6 +11,28 @@ import { auth, provider, signInWithPopup, onAuthStateChanged, signOut } from '..
 export default function NavBar() {
   const [isVisible, setIsVisible] = useState(true);
   const [user, setUser] = useState(null);
+  const [searchText, setSearchText] = useState('');
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+  const router = useRouter();
+
+  const handleInputChange = (e) => {
+    setSearchText(e.target.value);
+  };
+
+
+  // to nie działa !!!!
+  const handleSearch = () => {
+    if (searchText.trim() !== '') {
+      router.push(`/comps/search?searchString=${encodeURIComponent(searchText.trim())}`);
+    }
+  };
+  /
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      handleSearch();
+    }
+  };
 
   const handleScroll = () => {
     const scrollY = window.scrollY;
@@ -55,10 +80,14 @@ export default function NavBar() {
         </Link>
 
         <div className="flex items-center w-3/4 max-w-lg relative">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-beige absolute left-3 top-2" fill="none" viewBox="0 0 24 24" stroke="#f5e6c8">
+          <svg onClick={handleSearch} xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-beige absolute left-3 top-2 cursor-pointer"
+               fill="none" viewBox="0 0 24 24" stroke="#f5e6c8">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="4" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
-          <input type="text" placeholder="Na co masz dziś ochotę?..." className="w-full bg-transparent text-beige pl-12 pr-4 py-2 border-b-4 border-beige focus:outline-none focus:border-beige"/>
+          <input type="text"
+                 placeholder="Na co masz dziś ochotę?..."
+                 className="w-full bg-transparent text-beige pl-12 pr-4 py-2 border-b-4 border-beige focus:outline-none focus:border-beige"
+                 value={searchText} onChange={handleInputChange} onKeyPress={handleKeyPress}/>
         </div>
 
         <div className="flex items-center space-x-6 mr-6">

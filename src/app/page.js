@@ -3,6 +3,7 @@
 import { useState } from "react";
 import GameDisplay from "@/components/GameDisplay";
 import BanerDisplay from "@/components/BanerDisplay";
+import { useRouter } from 'next/router';
 
 export default function Page() {
 

@@ -34,7 +34,7 @@ export default function Page({ params }) {
 
     return (
         <main className='min-h-screen bg-dark-beige'>
-            <div className='h-30 h-30 bg-opacity-100'></div>
+            <div className='h-32 bg-opacity-100'></div>
             <div className="flex flex-col justify-center bg-beige p-4 ml-16 mt-10">
                 <div className='flex '>
                     <Link href="/" className="block px-4 py-2 text-green">Strona główna</Link>

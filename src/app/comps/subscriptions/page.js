@@ -42,7 +42,7 @@ export default function Page({ params }) {
                     <Link href="/comps/subscriptions" className="block px-4 py-2 text-green">Subskrypcje</Link>
                 </div>
             </div>
-            <div className="flex flex-wrap justify-center gap-8 p-8 w-[90%] mx-auto mt-40">
+            <div className="flex flex-wrap justify-center gap-8 p-8 w-[90%] mx-auto">
                 <SubscriptionDisplay id={0}/>
                 <SubscriptionDisplay id={1}/>
                 <SubscriptionDisplay id={2}/>

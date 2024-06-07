@@ -10,15 +10,25 @@ export default function Product(props) {
                     {/*<Image fill src={`/photos/${props.image}`} alt="" sizes="100vw" className='rounded-lg' />*/}
                     <Image fill src={props.image} alt="" className='object-cover'/>
                     <div className={`absolute top-28 right-0 px-0 py-0 text-green-b text-lg z-0 rounded-l-md w-[4.5rem] flex justify-center font-extrabold ${
-                        props.category === 'Gra'
+                        props.category === 'Game1'
                             ? 'bg-gra'
-                            : props.category === 'Album'
-                                ? 'bg-album'
-                                : props.category === 'E-Book'
-                                    ? 'bg-book'
-                                    : ''
+                            : props.category === 'Game2'
+                                ? 'bg-gra'
+                                : props.category === 'Game3'
+                                    ? 'bg-gra'
+                                    : props.category === 'Album'
+                                        ? 'bg-album'
+                                        : props.category === 'E-Book'
+                                            ? 'bg-book'
+                                            : ''
                     }`}>
-                        {props.category}
+                        {props.category === 'Game1'
+                            ? "Gra"
+                            : props.category === 'Game2'
+                                ? "Gra"
+                                : props.category === 'Game3'
+                                    ? "Gra"
+                                    : props.category}
                     </div>
                 </div>
                 {/*<p className="py-2 ml-20 text-2xl text-green">{props.price}</p>*/}
@@ -29,8 +39,14 @@ export default function Product(props) {
                         <span className="text-green-b text-3xl">{props.price}</span>
                         <img src="/photos/gem_symbol_dark.png" alt="gem" className="w-6 h-6 mt-1 ml-2" />
                     </div>
-                    </div>
-                {/*<p className="text-2xl">{props.category}</p>*/}
+                </div>
+                <div className="flex flex-col justify-center p-4">
+                    {/*<Link href={} className="px-15 text-green">*/}
+                    <button className="mt-4 bg-button text-button px-4 py-2 rounded border border-#7F6E4D border-3" style={{ width: '200px' }}>
+                        Kup teraz!
+                    </button>
+                    {/*</Link>*/}
+                </div>
             </div>
 
         </div>

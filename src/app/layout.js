@@ -4,8 +4,8 @@ import Footer from '@/components/Footer'
 import NavBar from '@/components/NavBar'
 
 export const metadata = {
-    title: 'Zagłosuj na grę',
-    description: 'Zagłosuj na grę',
+    title: 'GEM',
+    description: 'rozrywka online',
 };
 
 export default function RootLayout({ children }) {

@@ -21,20 +21,36 @@ export default function Footer() {
                         <div>
                             <h2 className="font-black mb-2">Centrum Obsługi Klienta</h2>
                             <ul>
-                                <li><Link href="/my-profile">Mój profil</Link></li>
-                                <li><Link href="/faq">FAQ</Link></li>
-                                <li><Link href="/contact-form">Formularz kontaktowy</Link></li>
-                                <li><Link href="/terms">Regulamin</Link></li>
+                                <li className="text-green"><Link href="/comps/contact">Formularz kontaktowy</Link></li>
+                                <li className="text-green">
+                                    <a href="public/Regulamin GEM.pdf" download>
+                                        Regulamin
+                                    </a>
+                                </li>
+                                <li className="text-green">
+                                    <a href="public/Info o dzialalnosci GEM.pdf" download>
+                                        Informacje o działalności gospodarczej
+                                    </a>
+                                </li>
+                                <li className="text-green">
+                                    <a href="public/RODO.pdf" download>
+                                        Informacje o ochronie danych RODO
+                                    </a>
+                                </li>
+                                <li className="text-green">
+                                    <a href="public/Polityka prywatnosci GEM.pdf" download>
+                                        Polityka prywatności
+                                    </a>
+                                </li>
                             </ul>
                         </div>
                         <div>
                             <h2 className="font-black mb-2">Menu strony</h2>
                             <ul>
-                                <li><Link href="/shop">Przeglądaj sklep</Link></li>
-                                <li><Link href="/games">Gry</Link></li>
-                                <li><Link href="/ebooks">E-Booki</Link></li>
-                                <li><Link href="/music">Muzyka</Link></li>
-                                <li><Link href="/offers">Oferty</Link></li>
+                                <li className="text-green"><Link href="/comps/games">Gry</Link></li>
+                                <li className="text-green"><Link href="/comps/ebooks">E-Booki</Link></li>
+                                <li className="text-green"><Link href="/comps/music">Muzyka</Link></li>
+                                <li className="text-green"><Link href="/comps/subscriptions">Subskrypcje</Link></li>
                             </ul>
                         </div>
                     </div>

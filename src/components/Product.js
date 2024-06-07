@@ -1,6 +1,44 @@
 import Image from "next/image"
+import {useEffect, useState} from "react";
+import Link from "next/link";
 
 export default function Product(props) {
+    const [showChosenPopup, setShowChosenPopup] = useState(false);
+    const [showPurchasedPopup, setShowPurchasedPopup] = useState(false);
+    const [showFailedPopup, setShowFailedPopup] = useState(false);
+
+    //info o liczbie kredytów
+    const credits = 3;  //to brać z bazy/navbaru
+
+    const handleClick = () => {
+        if(credits < props.price){
+            setShowFailedPopup(true);
+            setTimeout(() => {
+                setShowFailedPopup(false);
+            }, 3000);
+        } else {
+            setShowChosenPopup(true); // Pokaż popup po udanym wysłaniu
+        }
+
+    };
+
+    const handleClose = () => {
+        setShowPurchasedPopup(false);
+    }
+
+    const handleConfirm = () => {
+        const newCredits = credits - props.price;
+        //updateCredits(newCredits); zmiana stanu konta użytkownika w bazie też
+
+        setShowChosenPopup(false);
+        setShowPurchasedPopup(true); // Pokaż popup po udanym wysłaniu
+    };
+
+    const handleDeny = () => {
+        setShowChosenPopup(false);
+    };
+
+
     return (
         <div className="flex flex-col justify-center bg-beige p-4 ml-16">
             <div className="flex items-center">
@@ -42,10 +80,68 @@ export default function Product(props) {
                 </div>
                 <div className="flex flex-col justify-center p-4">
                     {/*<Link href={} className="px-15 text-green">*/}
-                    <button className="mt-4 bg-button text-button px-4 py-2 rounded border border-#7F6E4D border-3" style={{ width: '200px' }}>
+                    <button onClick={handleClick} className="mt-4 bg-button text-button px-4 py-2 rounded border border-#7F6E4D border-3" style={{ width: '200px' }}>
                         Kup teraz!
                     </button>
-                    {/*</Link>*/}
+                    {showChosenPopup && (
+                        <div className="fixed z-40 top-0 left-0 w-full h-full flex items-center justify-center">
+                            <div className="bg-green text-beige text-centered h-64 w-[100%] px-4 py-2 rounded flex items-center justify-center" >
+                                <ul>
+                                    <li>
+                                        <p className="text-center text-2xl">Czy na pewno chcesz kupić:</p>
+                                    </li>
+                                    <li>
+                                        <p className="text-center mt-5 text-2xl">{props.title}, {props.author}?</p>
+                                    </li>
+                                    <li className="flex items-center justify-center">
+                                        <button onClick={handleConfirm} className="mt-4 w-[40%] mx-auto bg-button text-button px-4 py-2 rounded border border-#7F6E4D border-3">
+                                            Kupuję!
+                                        </button>
+                                        <button onClick={handleDeny} className="mt-4 w-[40%] mx-auto bg-button text-button px-4 py-2 rounded border border-#7F6E4D border-3">
+                                            Rezygnuję!
+                                        </button>
+                                    </li>
+                                </ul>
+
+
+
+                            </div>
+                        </div>
+                    )}
+                    {showPurchasedPopup && (
+                        <div className="fixed z-50 top-0 left-0 w-full h-full flex items-center justify-center">
+                            <div className="bg-green text-beige text-centered h-64 w-[50%] px-4 py-2 rounded flex items-center justify-center" >
+                                <ul className="w-[80%] full">
+                                    <li><p className="text-center text-2xl">Zakupiono!</p></li>
+                                    <li className="flex items-center justify-center">
+                                        <Link href="/comps/history" className="mt-4 w-[40%] mx-auto bg-button text-button px-4 py-2 rounded border border-#7F6E4D border-3">
+                                            Twoje produkty!
+                                        </Link>
+                                        <button onClick={handleClose} className="mt-4 w-[40%] mx-auto bg-button text-button px-4 py-2 rounded border border-#7F6E4D border-3">
+                                            Wyjdź!
+                                        </button>
+                                    </li>
+                                    {/*<li className="flex items-center justify-center">
+                                        <Link href="/comps/about/history" className="w-[40%] mx-auto">
+                                            <button  className="mt-4 bg-button text-button px-4 py-2 rounded border border-#7F6E4D border-3">
+                                                Twoje produkty
+                                            </button>
+                                        </Link>
+                                        <button onClick={handleClose} className="mt-4 w-[40%] mx-auto bg-button text-button px-4 py-2 rounded border border-#7F6E4D border-3">
+                                            Wyjdź
+                                        </button>
+                                    </li>*/}
+                                </ul>
+                            </div>
+                        </div>
+                    )}
+                    {showFailedPopup && (
+                        <div className="fixed z-50 top-0 left-0 w-full h-full flex items-center justify-center">
+                            <div className="bg-green text-beige text-centered h-64 w-[50%] px-4 py-2 rounded flex items-center justify-center" >
+                                <p className="text-center text-2xl">Masz za mało kredytów!</p>
+                            </div>
+                        </div>
+                    )}
                 </div>
             </div>
 

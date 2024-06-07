@@ -46,6 +46,10 @@ export default function NavBar() {
   const handleLogin = async () => {
     try {
       await signInWithPopup(auth, provider);
+
+      //sczytanie liczby kredytów z bazy dla tego użytkownika
+      // lub jeśli go nie ma to dodanie rekordu z nim
+
     } catch (error) {
       console.error("Error logging in: ", error);
     }
@@ -137,7 +141,7 @@ export default function NavBar() {
               <Link href="/comps/games/3" className="block px-4 py-2 text-green">Kategoria 3</Link>
             </div>
           </div>
-          <Link href="/comps/ebooks" className="px-15 text-xl text-green">Ebooki</Link>
+          <Link href="/comps/ebooks" className="px-15 text-xl text-green">E-booki</Link>
           <Link href="/comps/music" className="px-15 text-xl text-green">Muzyka</Link>
           <Link href="/comps/subscriptions" className="px-15 text-xl text-green">Subskrypcje</Link>
           <div className="relative group">

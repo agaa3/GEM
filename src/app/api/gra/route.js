@@ -7,16 +7,13 @@ export async function GET(request) {
     const { searchParams } = new URL(request.url)
     const gra = parseInt(searchParams.get('gra'))
 
-    const game = await prisma.game.findUnique({
+    const product = await prisma.product.findMany({
         where: {
-            id: gra,
-        },
-        include: {
-            comments: true,
-        },
+            category: "Game"
+        }
     });
 
-    return NextResponse.json({ game });
+    return NextResponse.json({ product });
 }
 
 export async function POST(request) {

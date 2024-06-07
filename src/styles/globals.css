@@ -113,6 +113,18 @@ a:hover {
     background-color: #25371f;
 }
 
+.bg-button {
+    background-color: #25371f;
+}
+
+.bg-button:hover {
+    background-color: #7F6E4D;
+}
+
+.text-button {
+    color: #f5e6c8;
+}
+
 .text-green {
     color: #25371f;
 }

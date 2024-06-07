@@ -27,7 +27,7 @@ export default function NavBar() {
       router.push(`/comps/search?searchString=${encodeURIComponent(searchText.trim())}`);
     }
   };
-  /
+  
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') {
       handleSearch();

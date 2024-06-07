@@ -21,7 +21,7 @@ export default function Footer() {
                         <div>
                             <h2 className="font-black mb-2">Centrum Obsługi Klienta</h2>
                             <ul>
-                                <li className="text-green"><Link href="/comps/contact">Formularz kontaktowy</Link></li>
+                                <li className="text-green"><Link href="/comps/about/contact">Formularz kontaktowy</Link></li>
                                 <li className="text-green">
                                     <a href="public/Regulamin GEM.pdf" download>
                                         Regulamin

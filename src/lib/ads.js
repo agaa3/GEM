@@ -5,7 +5,7 @@ export const ads = [
       url: "/comps/special",
       title: "Temat miesiąca: \nFANTASY",
       subtitle: "Zgarnij 5 produktów w promocyjnej cenie!",
-      buttonText: "Przejdź do sklepu!",
+      buttonText: "Przejdź do oferty!",
     },
     {
       id: 2,

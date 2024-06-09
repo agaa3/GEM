@@ -23,22 +23,22 @@ export default function Footer() {
                             <ul>
                                 <li className="text-green"><Link href="/comps/about/contact">Formularz kontaktowy</Link></li>
                                 <li className="text-green">
-                                    <a href="public/Regulamin GEM.pdf" download>
+                                    <a href="/Regulamin_Sklepu_Internetowego_GEM.pdf" download>
                                         Regulamin
                                     </a>
                                 </li>
                                 <li className="text-green">
-                                    <a href="public/Info o dzialalnosci GEM.pdf" download>
+                                    <a href="/Informacje_o_działalności_gospodarczej_GEM.pdf" download>
                                         Informacje o działalności gospodarczej
                                     </a>
                                 </li>
                                 <li className="text-green">
-                                    <a href="public/RODO.pdf" download>
+                                    <a href="/Informacja_o_przetwarzaniu_danych_osobowych_GEM.pdf" download>
                                         Informacje o ochronie danych RODO
                                     </a>
                                 </li>
                                 <li className="text-green">
-                                    <a href="public/Polityka prywatnosci GEM.pdf" download>
+                                    <a href="/Polityka_prywatnosci_GEM.pdf" download>
                                         Polityka prywatności
                                     </a>
                                 </li>

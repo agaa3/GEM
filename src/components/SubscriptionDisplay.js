@@ -1,64 +1,59 @@
 'use client'
-import { useEffect } from "react"
-import { subs } from "@/lib/subs"
+import { useEffect, useState } from "react";
+import { subs } from "@/lib/subs";
 
-const SubscriptionDisplay = ({ id }) => {
+const SubscriptionDisplay = ({ id, isActive, setActiveSubIndex }) => {
+    const [paypalButtonCreated, setPaypalButtonCreated] = useState(false);
     const selectedSub = subs[id];
-    if (!selectedSub) {
-        return <div>Brak danych dla tego abonamentu.</div>;
-    }
 
     useEffect(() => {
         const loadPaypalScript = () => {
-            const existingScript = document.getElementById('paypal-script');
-            if (!existingScript) {
+            if (!document.getElementById('paypal-script')) {
                 const script = document.createElement("script");
                 script.id = 'paypal-script';
-                script.src = "https://www.paypal.com/sdk/js?client-id=AZONjM7NkdEuKL3P2Uo6Am1ILpF7Dyebhi1uOehJUolZXwE_-9SvR_jW0mwPwuxjs9tlW77mcn-myOQv&currency=PLN";
+                script.src = "https://www.paypal.com/sdk/js?client-id=AR_Mbxijvf1RLe6xqDBFr5GupDRgIzTBTB0oa1A0G7Fg-PlfXBpAlxzUZdExliXSLpP09uW4jrbXxPZW&currency=PLN";
                 script.async = true;
-                script.onload = renderPaypalButtons;
+                script.onload = () => {};
                 document.body.appendChild(script);
-            } else {
-                renderPaypalButtons();
             }
         };
-
-        const renderPaypalButtons = () => {
-            if (window.paypal) {
-                subs.forEach((sub, index) => {
-                    if (document.getElementById(`paypal-button-container-${index}`).children.length === 0) {
-                        window.paypal.Buttons({
-                            createOrder: (data, actions) => {
-                                return actions.order.create({
-                                    purchase_units: [{
-                                        amount: {
-                                            value: sub.price,
-                                        },
-                                        description: sub.name,
-                                    }],
-                                });
-                            },
-                            onApprove: (data, actions) => {
-                                return actions.order.capture().then((details) => {
-                                    alert("Transaction completed by " + details.payer.name.given_name);
-                                    // Handle successful transaction here (e.g., update database, inform user)
-                                });
-                            },
-                            onError: (err) => {
-                                console.error(err);
-                                alert("An error occurred during the transaction");
-                            }
-                        }).render(`#paypal-button-container-${index}`);
-                    }
-                });
-            }
-        };
-
         loadPaypalScript();
-    }, [id]);
+    }, []);
+
+    useEffect(() => {
+        if (isActive && window.paypal) {
+            window.paypal.Buttons({
+                createOrder: (data, actions) => {
+                    return actions.order.create({
+                        purchase_units: [{
+                            amount: {
+                                value: selectedSub.price,
+                            },
+                            description: selectedSub.name,
+                        }],
+                    });
+                },
+                onApprove: (data, actions) => {
+                    return actions.order.capture().then((details) => {
+                        alert("Transaction completed by " + details.payer.name.given_name);
+                    });
+                },
+                onError: (err) => {
+                    console.error(err);
+                    alert("An error occurred during the transaction");
+                }
+            }).render(`#paypal-button-container-${id}`);
+            setPaypalButtonCreated(true);
+        }
+    }, [isActive, selectedSub, id]);
+
+    const handlePurchaseClick = () => {
+        setActiveSubIndex(id);
+        setPaypalButtonCreated(false); // Reset the paypalButtonCreated state
+    };
 
     return (
-        <div className='bg-opacity-50 rounded-lg bg-neutral-600 md:basis-3/4'>
+        <div className='bg-opacity-50 rounded-lg bg-neutral-600 md:basis-3/4 m-4'>
             <div className="flex flex-col justify-center bg-beige p-4 ml-16">
                 <div className="flex flex-col justify-center p-4">
                     <p className="text-xl text-green-b">{selectedSub.name}</p>
@@ -69,7 +64,14 @@ const SubscriptionDisplay = ({ id }) => {
                         <span className="text-green-b text-3xl"> miesięcznie</span>
                     </div>
                 </div>
-                <div id={`paypal-button-container-${id}`} className="mt-4 flex" style={{ width: '200px', display: 'flex', flexDirection: 'row', gap: '10px' }}></div>
+                <button 
+                    className="mt-4 bg-button text-button px-4 py-2 rounded border border-#7F6E4D border-3" 
+                    style={{ width: '300px' }}
+                    onClick={handlePurchaseClick}
+                >
+                    Kup teraz!
+                </button>
+                {isActive && <div id={`paypal-button-container-${id}`} className="mt-4" style={{ width: '300px' }}></div>}
             </div>
         </div>
     );

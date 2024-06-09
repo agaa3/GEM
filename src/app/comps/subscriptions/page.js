@@ -1,26 +1,15 @@
 'use client'
-import { useEffect, useState } from 'react'
-import Link from "next/link";
+import { useState } from "react";
+import { subs } from "@/lib/subs";
 import SubscriptionDisplay from "@/components/SubscriptionDisplay";
-import { subs } from "@/lib/subs"; // Dodaj ten import
+import Link from "next/link";
 
-export default function Page({ params }) {
-    const [productsInfo, setProductsInfo] = useState([])
+const SubscriptionsPage = () => {
+    const [activeSubIndex, setActiveSubIndex] = useState(null);
 
-    const [product, setProduct] = useState({
-        author: '',
-        title: '',
-        category: '',
-        price: '',
-    });
-
-    useEffect(() => {
-        (async () => {
-            const req = await fetch(`http://localhost:3000/api/product/ebooks`)
-            const res = await req.json()
-            setProductsInfo(res.product)
-        })();
-    }, [])
+    const handleSetActiveSubIndex = (index) => {
+        setActiveSubIndex(prevIndex => (prevIndex === index ? null : index));
+    };
 
     return (
         <main className='min-h-screen bg-dark-beige'>
@@ -34,9 +23,16 @@ export default function Page({ params }) {
             </div>
             <div className="flex flex-wrap justify-center gap-8 p-8 w-[90%] mx-auto">
                 {subs.map((sub, index) => (
-                    <SubscriptionDisplay key={index} id={index} />
+                    <SubscriptionDisplay 
+                        key={index} 
+                        id={index} 
+                        isActive={activeSubIndex === index} 
+                        setActiveSubIndex={handleSetActiveSubIndex} 
+                    />
                 ))}
             </div>
         </main>
-    )
-}
+    );
+};
+
+export default SubscriptionsPage;

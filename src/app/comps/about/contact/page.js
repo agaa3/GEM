@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from "next/link";
 
 export default function Page() {
@@ -10,7 +10,6 @@ export default function Page() {
         message: ''
     });
 
-    const [responseMessage, setResponseMessage] = useState('');
     const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 
     const handleChange = (e) => {
@@ -21,16 +20,25 @@ export default function Page() {
         });
     };
 
-
-    //cos tu nie działa
     const handleSubmit = async (e) => {
-        setShowSuccessPopup(true); // Pokaż popup po udanym wysłaniu
-        // Ukryj popup po kilku sekundach
+        // Symulacja udanego wysłania formularza i czyszczenie inputów
+        setShowSuccessPopup(true);
+        setFormData({
+            name: '',
+            email: '',
+            subject: '',
+            message: ''
+        });
+
+        // Wyczyszczenie popupu po 3 sekundach - za szybko to jakos znika uchhhhhhh
         setTimeout(() => {
             setShowSuccessPopup(false);
-        }, 3000);
-        e.preventDefault();
+        }, 90000);
 
+        // Symulacja rzeczywistego wysłania danych do serwera (zakomentowana)
+        /*
+        e.preventDefault();
+    
         try {
             const response = await fetch('/api/contact', {
                 method: 'POST',
@@ -39,26 +47,30 @@ export default function Page() {
                 },
                 body: JSON.stringify(formData),
             });
-
-            // Sprawdź, czy odpowiedź jest udana
+    
             if (response.ok) {
-                // Przeczytaj zawartość odpowiedzi tylko raz
                 const result = await response.json();
                 setResponseMessage(result.message);
-                setShowSuccessPopup(true); // Pokaż popup po udanym wysłaniu
-                // Ukryj popup po kilku sekundach
+                setShowSuccessPopup(true);
                 setTimeout(() => {
                     setShowSuccessPopup(false);
                 }, 3000);
+    
+                // Wyczyszczenie inputów po udanym wysłaniu
+                setFormData({
+                    name: '',
+                    email: '',
+                    subject: '',
+                    message: ''
+                });
             } else {
-                // Obsłuż błędy odpowiedzi HTTP
                 throw new Error('Network response was not ok');
             }
         } catch (error) {
             console.error('Error submitting form:', error);
-            console.log(formData.message);
             setResponseMessage('Error submitting form');
         }
+        */
     };
 
     return (
@@ -77,16 +89,17 @@ export default function Page() {
                 <p className="text-5xl mt-10 text-green-b">
                     Kontakt
                 </p>
-                <div className="text-l mt-10 text-green-b">
-                    <address>
-                        GEM<br />
-                        ul. Ulicowa 123/45,<br />
-                        00-000 Warszawa<br />
-                        <a href="tel:+48111222333" className="block">+48 111 222 333</a>
-                        <a href="mailto:gem@gmail.com" className="block">gem@gmail.com</a>
-                    </address>
-                </div>
-                <div className="bg-beige p-8 rounded-lg shadow-md w-full mt-10">
+                <div className="text-l mt-10 text-green-b mx-auto" style={{ marginLeft: '350px' }}>
+                <address>
+                    <span style={{ fontWeight: 'bold', fontSize: '1.2em' }}>GEM</span><br />
+                    <br />ul. Ulicowa 123/45,<br />
+                    00-000 Warszawa<br />
+                    <a href="tel:+48111222333" className="block">+48 111 222 333</a>
+                    <a href="mailto:gem@gmail.com" className="block">gem@gmail.com</a>
+                </address>
+            </div>
+            {/* Tutaj spoko byloby w drugiej kolumnie dodac mala mape ale nie wychodzi mi to na razie */}
+                <div className="bg-beige p-8 rounded-lg shadow-md w-[70%] mt-10 mx-auto text-center">
                     <h1 className="text-2xl mb-6 text-center text-green-b">Formularz Kontaktowy</h1>
                     <form onSubmit={handleSubmit}>
                         <div className="mb-4">
@@ -97,7 +110,7 @@ export default function Page() {
                                 name="name"
                                 value={formData.name}
                                 onChange={handleChange}
-                                    className="w-full text-green-b px-3 py-2 border rounded"
+                                className="w-[90%] text-green-b px-3 py-2 border rounded"
                                 required
                             />
                         </div>
@@ -109,7 +122,7 @@ export default function Page() {
                                 name="email"
                                 value={formData.email}
                                 onChange={handleChange}
-                                className="w-full text-green-b px-3 py-2 border rounded"
+                                className="w-[90%] text-green-b px-3 py-2 border rounded"
                                 required
                             />
                         </div>
@@ -121,7 +134,7 @@ export default function Page() {
                                 name="subject"
                                 value={formData.subject}
                                 onChange={handleChange}
-                                className="w-full text-green-b px-3 py-2 border rounded"
+                                className="w-[90%] text-green-b px-3 py-2 border rounded"
                                 required
                             />
                         </div>
@@ -132,7 +145,7 @@ export default function Page() {
                                 name="message"
                                 value={formData.message}
                                 onChange={handleChange}
-                                className="w-full text-green-b px-3 py-2 border rounded h-32"
+                                className="w-[90%] text-green-b px-3 py-2 border rounded h-32"
                                 required
                             />
                         </div>
@@ -147,7 +160,7 @@ export default function Page() {
                     {showSuccessPopup && (
                         <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center">
                             <div className="bg-green text-beige text-centered h-64 w-[50%] px-4 py-2 rounded flex items-center justify-center" >
-                                <p className="text-center text-2xl">Udało się wysłać!</p>
+                                <p className="text-center text-2xl">Udało się wysłać wiadomość!</p>
                             </div>
                         </div>
                     )}

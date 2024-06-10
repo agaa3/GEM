@@ -5,13 +5,16 @@ import { usePathname, useSearchParams } from 'next/navigation'
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { FaUser } from 'react-icons/fa';
+import { FaUser, FaBars, FaChevronDown } from 'react-icons/fa';
 import { auth, provider, signInWithPopup, onAuthStateChanged, signOut } from '../../utils/firebase';
 
 export default function NavBar() {
   const [isVisible, setIsVisible] = useState(true);
   const [user, setUser] = useState(null);
   const [searchText, setSearchText] = useState('');
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isGamesOpen, setIsGamesOpen] = useState(false);
+  const [isAboutOpen, setIsAboutOpen] = useState(false);
   const pathname = usePathname()
   const searchParams = useSearchParams()
   const router = useRouter();
@@ -77,14 +80,16 @@ export default function NavBar() {
   return (
     <header className={`fixed top-0 left-0 z-50 w-full bg-beige transition-opacity duration-300 ${isVisible ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
       <div className="w-full flex justify-between items-center bg-green py-4 px-6">
-        <Link href='/'>
-          <div className='relative w-48 h-16 ml-6'>
-            <Image fill src='/photos/logo_gem.png' alt='GEM Logo' sizes='100vw' />
-          </div>
-        </Link>
+        <div className="flex items-center">
+          <Link href='/'>
+            <div className={`relative ${isMobileMenuOpen ? 'w-36' : 'w-48'} h-16`}>
+              <Image src='/photos/logo_gem.png' alt='GEM Logo' layout="fill" className={isMobileMenuOpen ? 'w-36' : 'w-48'} />
+            </div>
+          </Link>
+        </div>
 
-        <div className="flex items-center w-3/4 max-w-lg relative">
-          <svg onClick={handleSearch} xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-beige absolute left-3 top-2 cursor-pointer"
+        <div className="hidden md:flex items-center w-3/4 max-w-lg relative">
+          <svg onClick={handleSearch} className="h-6 w-6 text-beige absolute left-3 top-2 cursor-pointer"
                fill="none" viewBox="0 0 24 24" stroke="#f5e6c8">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="4" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
@@ -124,9 +129,47 @@ export default function NavBar() {
             </button>
           )}
         </div>
+        <div className="md:hidden">
+          <FaBars className="text-beige cursor-pointer" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} />
+        </div>
       </div>
 
-      <nav className="bg-beige py-4">
+      {isMobileMenuOpen && (
+        <nav className="bg-beige py-4 md:hidden">
+          <div className="w-full flex justify-center items-center mt-4">
+            <input type="text"
+                    placeholder="Na co masz dziś ochotę?..."
+                    className="w-80 bg-transparent text-black pl-4 pr-2 py-2 border-b-4 border-black focus:outline-none focus:border-black mb-3"
+                    value={searchText} onChange={handleInputChange} onKeyPress={handleKeyPress}/>
+             <svg onClick={handleSearch} className="h-6 w-6 text-black cursor-pointer ml-2"
+                  fill="none" viewBox="0 0 24 24" stroke="#000000">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </div>
+          <div className="flex flex-col items-center">
+            <div className="px-15 text-xl text-green" onClick={() => setIsGamesOpen(!isGamesOpen)}>Gry <FaChevronDown className={`text-beige ml-1 ${isGamesOpen ? 'transform rotate-180' : ''}`} /></div>
+            {isGamesOpen && (
+              <div className="bg-beige py-1 w-full text-center" onClick={() => setIsMobileMenuOpen(false)}>
+                <Link href="/comps/games/1" className="block px-4 py-2 text-green">Kategoria 1</Link>
+                <Link href="/comps/games/2" className="block px-4 py-2 text-green">Kategoria 2</Link>
+                <Link href="/comps/games/3" className="block px-4 py-2 text-green">Kategoria 3</Link>
+              </div>
+            )}
+            <Link href="/comps/ebooks" className="px-15 text-xl text-green" onClick={() => setIsMobileMenuOpen(false)}>E-booki</Link>
+            <Link href="/comps/music" className="px-15 text-xl text-green" onClick={() => setIsMobileMenuOpen(false)}>Muzyka</Link>
+            <Link href="/comps/subscriptions" className="px-15 text-xl text-green" onClick={() => setIsMobileMenuOpen(false)}>Subskrypcje</Link>
+            <div className="px-15 text-xl text-green" onClick={() => setIsAboutOpen(!isAboutOpen)}>O nas <FaChevronDown className={`text-beige ml-1 ${isAboutOpen ? 'transform rotate-180' : ''}`} /></div>
+            {isAboutOpen && (
+              <div className="bg-beige py-1 w-full text-center" onClick={() => setIsMobileMenuOpen(false)}>
+                <Link href="/comps/about/how-it-works" className="block px-4 py-2 text-green">Jak to działa?</Link>
+                <Link href="/comps/about/contact" className="block px-4 py-2 text-green">Kontakt</Link>
+              </div>
+            )}
+          </div>
+        </nav>
+      )}
+      {/* Normal Menu */}
+      <nav className="bg-beige py-4 md:block hidden">
         <div className="w-full flex justify-around">
           <div className="relative group">
             <Link href="/comps/games" className="flex items-center px-15 text-xl text-green">
@@ -159,6 +202,5 @@ export default function NavBar() {
         </div>
       </nav>
     </header>
-
   );
 }

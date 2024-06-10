@@ -18,15 +18,13 @@ export default function Page() {
                     Jak to działa?
                 </p>
                 <p className="text-xl mt-10 text-green-b font-bold text-centered">
-                    Opisywana w sprawozdaniu działalność to sklep internetowy zajmujący się sprzedażą e-booków,
-                    muzyki oraz kluczy do gier do pobrania. Pobrane pliki użytkownik będzie mógł zatrzymać już na zawsze,
-                    jednak zakup treści nie zwalnia użytkownika z przestrzegania praw autorskich. Przy każdym produkcie
-                    będzie znajdowała się informacja na temat zakazu rozpowszechniania, kopiowania i udostępniania treści
-                    zakupionych.
+                   Jesteśmy sklepem internetowym zajmującym się sprzedażą e-booków,
+                    muzyki oraz kluczy do gier do pobrania. Pliki pobrane z naszej strony można zatrzymać już na zawsze,
+                    jednak zakup treści nie zwalnia użytkowników z przestrzegania praw autorskich.
                 </p>
                 <p className="text-xl mt-10 text-green-b font-bold text-centered">
-                    Każdy produkt z oferty będzie miał przypisaną ilość kredytów, za które można go zakupić.
-                    W tym celu, użytkownik będzie musiał wykupić jeden z modeli subskrypcji:
+                    Każdy produkt z oferty ma przypisaną ilość kredytów, za które można go zakupić.
+                    W tym celu, należy wykupić jeden z modeli subskrypcji:
                 </p>
                 <ul className="text-xl ml-10 mr-10 mt-10 text-green-b font-bold text-centered">
                     <li>20 zł - 1 kredyt miesięcznie - Starter</li>
@@ -45,15 +43,15 @@ export default function Page() {
                     <li>Bundle tematyczny składający się z różnych produktów z różnych kategorii - 3 kredyty</li>
                 </ul>
                 <p className="text-xl mt-10 mb-10 text-green-b font-bold text-centered">
-                    Dodatkowo, co miesiąc na stronie będzie pojawiać się oferta na produkty z szczególnych
+                    Dodatkowo, co miesiąc na stronie pojawia się oferta na produkty z szczególnych
                     kategorii obejmujących ebooki, muzykę oraz gry (np. fantasy, chill…).
-                    Użytkownik nie ma obowiązku wydawać kredytów w określonym czasie - będą się one
+                   Nie ma obowiązku wydawać kredytów w określonym czasie - będą się one
                     gromadzić na jego koncie.
                     Subskrypcje będą odnawiane automatycznie, do momentu anulowania przez użytkownika. Po
                     zakończeniu subskrypcji, zebrane kredyty są ważne jeszcze przez okres 14 dni przed zniknięciem z konta.
-                    W celu pozyskiwania produktów zawierane będą umowy z wydawcami książek, wytwórniami
+                    W celu pozyskiwania produktów zawierane są umowy z wydawcami książek, wytwórniami
                     muzycznymi i producentami gier, aby uzyskać licencje na dystrybucję ich treści cyfrowych. Te umowy
-                    będą obejmować określone tytuły, autorskie dzieła lub całe katalogi. Wydawcy uzyskują dostęp do strony
+                    obejmują określone tytuły, autorskie dzieła lub całe katalogi. Wydawcy posiadają dostęp do strony
                     i mogą dodawać, usuwać oraz modyfikować swoje produkty.
                 </p>
             </div>

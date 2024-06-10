@@ -15,6 +15,7 @@ export default function NavBar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isGamesOpen, setIsGamesOpen] = useState(false);
   const [isAboutOpen, setIsAboutOpen] = useState(false);
+  const [isMobileView, setIsMobileView] = useState(false);
   const pathname = usePathname()
   const searchParams = useSearchParams()
   const router = useRouter();
@@ -67,23 +68,37 @@ export default function NavBar() {
   };
 
   useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth <= 768) { // Adjust the width as per your mobile breakpoint
+        setIsMobileView(true);
+      } else {
+        setIsMobileView(false);
+      }
+    };
+
+    handleResize(); // Initial check
+    window.addEventListener('resize', handleResize);
     window.addEventListener('scroll', handleScroll);
+
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setUser(user);
     });
+
     return () => {
+      window.removeEventListener('resize', handleResize);
       window.removeEventListener('scroll', handleScroll);
       unsubscribe();
-    }
+    };
   }, []);
+
 
   return (
     <header className={`fixed top-0 left-0 z-50 w-full bg-beige transition-opacity duration-300 ${isVisible ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
       <div className="w-full flex justify-between items-center bg-green py-4 px-6">
         <div className="flex items-center">
           <Link href='/'>
-            <div className={`relative ${isMobileMenuOpen ? 'w-36' : 'w-48'} h-16`}>
-              <Image src='/photos/logo_gem.png' alt='GEM Logo' layout="fill" className={isMobileMenuOpen ? 'w-36' : 'w-48'} />
+            <div className={`relative ${isMobileView ? 'w-32' : 'w-48'} h-16`}>
+              <Image src='/photos/logo_gem.png' alt='GEM Logo' layout="fill" className="object-contain" />
             </div>
           </Link>
         </div>

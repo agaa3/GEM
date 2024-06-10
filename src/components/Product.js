@@ -47,7 +47,7 @@ export default function Product(props) {
                     {/*<Image fill src={`/${props.image}`} alt=""  />*/}
                     {/*<Image fill src={`/photos/${props.image}`} alt="" sizes="100vw" className='rounded-lg' />*/}
                     <Image fill src={props.image} alt="" className='object-cover'/>
-                    <div className={`absolute top-28 right-0 px-0 py-0 text-green-b text-lg z-0 rounded-l-md w-[4.5rem] flex justify-center font-extrabold ${
+                    <div className={`absolute top-28 right-0 px-0 py-0 text-green-b text-lg z-0 rounded-l-md w-[4.5rem] flex justify-center font-extrabold drop-shadow-[0_3px_6px_rgba(0,0,0,0.5)] ${
                         props.category === 'Game1'
                             ? 'bg-gra'
                             : props.category === 'Game2'

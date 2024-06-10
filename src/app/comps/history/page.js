@@ -9,16 +9,16 @@ import Link from "next/link";
 export default function Page({ params }) {
     const [purchasesInfo, setPurchasesInfo] = useState([])
 
-    const [purchase, setPurchase] = useState({
-        id: '',
-        user: '',
-        author: '',
-        title: '',
-        category: '',
-        price: '',
-        date: '',
-        downloadURL: '',
-    });
+    // const [purchase, setPurchase] = useState({
+    //     id: '',
+    //     user: '',
+    //     author: '',
+    //     title: '',
+    //     category: '',
+    //     price: '',
+    //     date: '',
+    //     downloadURL: '',
+    // });
 
 
 
@@ -27,7 +27,7 @@ export default function Page({ params }) {
 
         (async () => {
 
-            const req = await fetch(`http://localhost:3000/api/product/purchases/${userID}`)
+            const req = await fetch(`http://localhost:3000/api/product/purchases?userID=${userID}`);
             const res = await req.json()
 
             setPurchasesInfo(res.purchase)
@@ -37,7 +37,9 @@ export default function Page({ params }) {
 
 
     return (
+
         <main className='min-h-screen bg-dark-beige'>
+
             <div className="flex flex-col">
                 <div className='h-32'></div>
                 <div className="flex flex-col justify-center bg-beige p-4 ml-16 mt-10">
@@ -49,9 +51,8 @@ export default function Page({ params }) {
                 </div>
                 <div className="flex flex-col md:flex-row items-start justify-center gap-8 p-8 w-[90%] mx-auto">
                     <div className='bg-opacity-50 rounded-lg bg-neutral-600 md:basis-3/4'>
-
                         {purchasesInfo.map((purchase) => (
-                            <Purchase key={purchase.id} user={purchase.user} author={purchase.author} title={purchase.title}
+                            <Purchase key={purchase.id} user={purchase.id} author={purchase.author} title={purchase.title}
                             category={purchase.category} price={purchase.price} date={purchase.date}
                             downloadURL={purchase.downloadURL} image={purchase.image}/>
                         ))}

@@ -11,7 +11,7 @@ const SubscriptionDisplay = ({ id, isActive, setActiveSubIndex }) => {
             if (!document.getElementById('paypal-script')) {
                 const script = document.createElement("script");
                 script.id = 'paypal-script';
-                script.src = "https://www.paypal.com/sdk/js?client-id=AR_Mbxijvf1RLe6xqDBFr5GupDRgIzTBTB0oa1A0G7Fg-PlfXBpAlxzUZdExliXSLpP09uW4jrbXxPZW&currency=PLN";
+                script.src = script.src = `https://www.paypal.com/sdk/js?client-id=${process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID}&currency=PLN`;
                 script.async = true;
                 script.onload = () => {};
                 document.body.appendChild(script);

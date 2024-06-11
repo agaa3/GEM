@@ -3,6 +3,8 @@ import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { MaptilerLayer } from "@maptiler/leaflet-maptilersdk";
 
+const apiKey = process.env.NEXT_PUBLIC_MAPTILER_API_KEY;
+
 const Map = () => {
   const mapContainer = useRef(null);
   const map = useRef(null);
@@ -18,7 +20,7 @@ const Map = () => {
     });
 
     const mtLayer = new MaptilerLayer({
-      apiKey: "3kmJGwTUWe4F0ho4d9cT",
+      apiKey: apiKey,
     }).addTo(map.current);
 
     // ikonka pinu nie dziala smh

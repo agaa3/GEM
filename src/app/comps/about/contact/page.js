@@ -94,19 +94,22 @@ export default function Page() {
     };
 
     return (
-<main className='min-h-screen bg-dark-beige flex items-center justify-center'>
-            <div className="flexflex flex-col justify-center p-16 w-full">
-                <div className="bg-dark-beige w-full mt-32"/>
-                <div className="flex flex-col justify-center bg-beige p-4 mt-10">
-                    <div className='flex '>
-                        <Link href="/" className="block px-4 py-2 text-green">Strona główna</Link>
-                        <a className="block py-2 text-green-b">/</a>
-                        <Link href="/comps/about" className="block px-4 py-2 text-green">O nas</Link>
-                        <a className="block py-2 text-green-b">/</a>
-                        <Link href="/comps/contact" className="block px-4 py-2 text-green">Kontakt</Link>
-                    </div>
-                </div>
-                <div className="flex flex-row m-10 h-auto">
+<main className='min-h-screen bg-dark-beige'>
+    <div className="flex flex-col mt-20 ml-20">
+        <div className='h-16'></div>
+        <div className="flex flex-col bg-beige p-4 mt-10">
+            <div className='flex '>
+                <Link href="/" className="block px-4 py-2 text-green">Strona główna</Link>
+                <a className="block py-2 text-green-b">/</a>
+                <Link href="/comps/about" className="block px-4 py-2 text-green">O nas</Link>
+                <a className="block py-2 text-green-b">/</a>
+                <Link href="/comps/contact" className="block px-4 py-2 text-green">Kontakt</Link>
+            </div>
+        </div>
+    </div>
+    <div className="flex flex-col justify-center pl-16 pr-16 pb-16 w-full">
+
+        <div className="flex flex-row m-10 h-auto">
                     <div className={`p-4 text-green-b text-2xl w-[30%] h-auto`}>
                         <p className="text-5xl mt-5 text-green-b mb-5">
                             Kontakt

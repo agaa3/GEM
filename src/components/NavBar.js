@@ -133,6 +133,7 @@ export default function NavBar() {
               </button>
               <div className="absolute top-full right-0 hidden bg-beige rounded-md border border-green-950 shadow-lg group-hover:block z-50">
                 <Link href="/comps/history" className="block px-4 py-2 text-green">Historia transakcji</Link>
+                <Link href="/comps/konto" className="block px-4 py-2 text-green">Moje konto</Link>
                 <button onClick={handleLogout} className="block w-full text-left px-4 py-2 text-black hover:bg-gray-100">Wyloguj</button>
               </div>
 

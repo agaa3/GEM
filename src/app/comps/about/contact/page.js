@@ -1,6 +1,12 @@
 'use client'
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Link from "next/link";
+import "leaflet/dist/leaflet.css";
+import dynamic from 'next/dynamic';
+const Map = dynamic(() => import('../map'), {
+    ssr: false,
+});
+
 
 export default function Page() {
     const [formData, setFormData] = useState({
@@ -74,7 +80,7 @@ export default function Page() {
     };
 
     return (
-        <main className='min-h-screen bg-dark-beige flex items-center justify-center'>
+<main className='min-h-screen bg-dark-beige flex items-center justify-center'>
             <div className="flexflex flex-col justify-center p-16 w-full">
                 <div className="bg-dark-beige w-full mt-32"/>
                 <div className="flex flex-col justify-center bg-beige p-4 mt-10">
@@ -89,17 +95,21 @@ export default function Page() {
                 <p className="text-5xl mt-10 text-green-b">
                     Kontakt
                 </p>
-                <div className="text-l mt-10 text-green-b mx-auto" style={{ marginLeft: '350px' }}>
-                <address>
-                    <span style={{ fontWeight: 'bold', fontSize: '1.2em' }}>GEM</span><br />
-                    <br />ul. Ulicowa 123/45,<br />
-                    00-000 Warszawa<br />
-                    <a href="tel:+48111222333" className="block">+48 111 222 333</a>
-                    <a href="mailto:gem@gmail.com" className="block">gem@gmail.com</a>
-                </address>
-            </div>
-            {/* Tutaj spoko byloby w drugiej kolumnie dodac mala mape ale nie wychodzi mi to na razie */}
-                <div className="bg-beige p-8 rounded-lg shadow-md w-[70%] mt-10 mx-auto text-center">
+                <div className="flex flex-row mt-2 space-x-4">
+                    <div className={`p-4 text-green-b mx-auto`}>
+                        <address>
+                            <span style={{ fontWeight: 'bold', fontSize: '1.2em' }}>GEM</span><br />
+                            <br />ul. Ulicowa 123/45,<br />
+                            00-000 Warszawa<br />
+                            <a href="tel:+48111222333" className="block">+48 111 222 333</a>
+                            <a href="mailto:gem@gmail.com" className="block">gem@gmail.com</a>
+                        </address>
+                    </div>
+                    <div>
+                        <Map />
+                    </div>
+                </div>
+                <div className="bg-beige p-8 rounded-lg shadow-md w-[70%] mt-2 mx-auto text-center">
                     <h1 className="text-2xl mb-6 text-center text-green-b">Formularz Kontaktowy</h1>
                     <form onSubmit={handleSubmit}>
                         <div className="mb-4">

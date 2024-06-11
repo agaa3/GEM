@@ -17,16 +17,29 @@ export default function Page() {
     });
 
     const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+    const [isTermsAccepted, setIsTermsAccepted] = useState(false);
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
+        const { name, value, type, checked } = e.target;
         setFormData({
             ...formData,
-            [name]: value
+            [name]: type === 'checkbox' ? checked : value
         });
     };
 
+    const handleCheckboxChange = (e) => {
+        setIsTermsAccepted(e.target.checked);
+    };
+
+    const isFormValid = () => {
+        return formData.name && formData.email && formData.subject && formData.message && isTermsAccepted;
+    };
+
     const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        if (!isFormValid()) return;
+
         // Symulacja udanego wysłania formularza i czyszczenie inputów
         setShowSuccessPopup(true);
         setFormData({
@@ -35,6 +48,7 @@ export default function Page() {
             subject: '',
             message: ''
         });
+        setIsTermsAccepted(false);
 
         // Wyczyszczenie popupu po 3 sekundach - za szybko to jakos znika uchhhhhhh
         setTimeout(() => {
@@ -92,20 +106,20 @@ export default function Page() {
                         <Link href="/comps/contact" className="block px-4 py-2 text-green">Kontakt</Link>
                     </div>
                 </div>
-                <p className="text-5xl mt-10 text-green-b">
-                    Kontakt
-                </p>
-                <div className="flex flex-row mt-2 space-x-4">
-                    <div className={`p-4 text-green-b mx-auto`}>
+                <div className="flex flex-row m-10 h-auto">
+                    <div className={`p-4 text-green-b text-2xl w-[30%] h-auto`}>
+                        <p className="text-5xl mt-5 text-green-b mb-5">
+                            Kontakt
+                        </p>
                         <address>
-                            <span style={{ fontWeight: 'bold', fontSize: '1.2em' }}>GEM</span><br />
+                            <span className="text-3xl" style={{ fontWeight: 'bold' }}>GEM</span><br />
                             <br />ul. Ulicowa 123/45,<br />
                             00-000 Warszawa<br />
                             <a href="tel:+48111222333" className="block">+48 111 222 333</a>
                             <a href="mailto:gem@gmail.com" className="block">gem@gmail.com</a>
                         </address>
                     </div>
-                    <div>
+                    <div className="w-[70%] h-auto">
                         <Map />
                     </div>
                 </div>
@@ -159,16 +173,38 @@ export default function Page() {
                                 required
                             />
                         </div>
+                        <div className="mb-4">
+                            <label className="block text-green-b mb-2">
+                                <input
+                                    type="checkbox"
+                                    name="terms"
+                                    checked={isTermsAccepted}
+                                    onChange={handleCheckboxChange}
+                                    className="mr-2"
+                                />
+                                Potwierdzam, że akceptuję&nbsp;
+                                <a href="/Regulamin_Sklepu_Internetowego_GEM.pdf" className="text-green" download>
+                                    Regulamin
+                                </a>
+                                . Potwierdzam również, że zapoznałem/am się z&nbsp;
+                                <a href="/Informacja_o_przetwarzaniu_danych_osobowych_GEM.pdf" className="text-green" download>
+                                    Informacją o przetwarzaniu danych osobowych
+                                </a>&nbsp;i&nbsp;
+                                <a href="/Polityka_prywatnosci_GEM.pdf" className="text-green" download>
+                                    Polityką Prywatności
+                                </a>.
+                            </label>
+                        </div>
                         <div className="text-center">
                             <button type="submit"
-                                    className="mt-4 bg-button text-button px-4 py-2 rounded border border-#7F6E4D border-3" style={{ width: '200px' }}>
+                                    className="mt-4 bg-button text-button px-4 py-2 rounded border border-#7F6E4D border-3" style={{ width: '200px' }} disabled={!isFormValid()}>
                                 Wyślij
                             </button>
                         </div>
                     </form>
                     {/* Popup po udanym wysłaniu */}
                     {showSuccessPopup && (
-                        <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center">
+                        <div className="fixed z-40 top-0 left-0 w-full h-full flex items-center justify-center">
                             <div className="bg-green text-beige text-centered h-64 w-[50%] px-4 py-2 rounded flex items-center justify-center" >
                                 <p className="text-center text-2xl">Udało się wysłać wiadomość!</p>
                             </div>

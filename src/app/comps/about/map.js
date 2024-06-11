@@ -34,8 +34,8 @@ const Map = () => {
   }, [center.lng, center.lat, zoom]);
 
   return (
-    <div className="relative z-0" style={{ width: '80vw', height: '100vh' }}>
-      <div ref={mapContainer} style={{ width: '50%', height: '50%' }} />
+    <div className="relative z-0" style={{ width: '100%', height: '100%' }}>
+      <div ref={mapContainer} style={{ width: '100%', height: '100%' }} />
     </div>
   )
 }

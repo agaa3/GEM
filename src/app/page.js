@@ -6,6 +6,8 @@ import BanerDisplay from "@/components/BanerDisplay";
 import { useRouter } from 'next/router';
 import Product from '@/components/Product'
 import Link from "next/link";
+import CookieBanner from "@/components/CookieBanner";
+
 
 export default function Page() {
     const [productsInfo, setProductsInfo] = useState([])
@@ -27,6 +29,7 @@ export default function Page() {
     }, [])
 
     return (
+        <>
         <section className={`relative min-h-screen overflow-hidden mb-[20px] ${backgroundColor}`}>
             {/*<div className={`m-0 absolute inset-0 z-0 bg-no-repeat bg-cover bg-center opacity-100`}></div>*/}
             <div className={`relative ${backgroundColor} z-30 mt-[150px]`}>
@@ -47,5 +50,7 @@ export default function Page() {
                 </div>
             </div>
         </section>
-    )
+        <CookieBanner />
+    </>
+    );
 }

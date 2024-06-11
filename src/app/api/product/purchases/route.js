@@ -6,7 +6,9 @@ const prisma = new PrismaClient();
 export async function GET(request) {
     try {
         const { searchParams } = new URL(request.url);
+        console.log(searchParams)
         const userID = searchParams.get('userID');
+        console.log(userID)
 
         if (!userID) {
             return NextResponse.error(new Error('User ID is required'), { status: 400 });
@@ -31,9 +33,9 @@ export async function GET(request) {
             author: purchase.product.author,
             title: purchase.product.title,
             category: purchase.product.category,
+            downloadURL: purchase.product.downloadURL,
             price: purchase.product.price,
             date: purchase.date.toISOString(),
-            downloadURL: purchase.downloadURL,
             image: purchase.product.image,
         }));
 

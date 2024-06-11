@@ -13,7 +13,7 @@ const BanerDisplay = ({ changeBackgroundColor  }) => {
     }
 
     return (
-        <div className="relative  z-50 p-12 mt-[168px]">
+        <div className={`relative ${selectedAd.color} z-50 p-12`}>
             <div className="flex flex-col items-center justify-center w-full">
                 <p className="text-[96px] font-bold text-center">
                     {selectedAd.title}

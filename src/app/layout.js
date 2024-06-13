@@ -8,6 +8,8 @@ export const metadata = {
     description: 'rozrywka online',
 };
 
+
+
 export default function RootLayout({ children }) {
     return (
         <html lang="pl">

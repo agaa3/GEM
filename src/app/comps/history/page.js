@@ -5,35 +5,53 @@ import { useEffect, useState } from 'react'
 import Purchase from '@/components/Purchase'
 import ResponsiveEmbed from 'react-responsive-embed'
 import Link from "next/link";
+import {auth, onAuthStateChanged} from "../../../../utils/firebase";
 
 export default function Page({ params }) {
     const [purchasesInfo, setPurchasesInfo] = useState([])
 
-    // const [purchase, setPurchase] = useState({
-    //     id: '',
-    //     user: '',
-    //     author: '',
-    //     title: '',
-    //     category: '',
-    //     price: '',
-    //     date: '',
-    //     downloadURL: '',
-    // });
+
+    const [googleUser, setGoogleUser] = useState(null);
+
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            setGoogleUser(user);
+
+        });
+        return unsubscribe;
+    }, []);
+
+
+
+    const [databaseUserInfo, setDatabaseUserInfo] = useState(null);
+
+    useEffect(() => {
+        if (googleUser) {
+            (async () => {
+                const req = await fetch(`http://localhost:3000/api/users?email=${googleUser.email}`);
+                const res = await req.json()
+
+                setDatabaseUserInfo(res)
+
+            })();
+        }
+    }, [googleUser])
 
 
 
     useEffect(() => {
-        const userID = 11; //to musimy mieć
+        
+        if (databaseUserInfo) {
+            (async () => {
 
-        (async () => {
+                const req = await fetch(`http://localhost:3000/api/product/purchases?userID=${databaseUserInfo.id}`);
+                const res = await req.json()
 
-            const req = await fetch(`http://localhost:3000/api/product/purchases?userID=${userID}`);
-            const res = await req.json()
+                setPurchasesInfo(res.purchase)
 
-            setPurchasesInfo(res.purchase)
-
-        })();
-    }, [])
+            })();
+        }
+    }, [databaseUserInfo])
 
 
     return (

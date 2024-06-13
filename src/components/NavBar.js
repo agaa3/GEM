@@ -50,7 +50,6 @@ export default function NavBar() {
   const handleLogin = async () => {
     try {
       await signInWithPopup(auth, provider);
-
       //sczytanie liczby kredytów z bazy dla tego użytkownika
       // lub jeśli go nie ma to dodanie rekordu z nim
 
@@ -66,6 +65,12 @@ export default function NavBar() {
       console.error("Error logging out: ", error);
     }
   };
+
+
+
+
+
+
 
   useEffect(() => {
     const handleResize = () => {
@@ -91,6 +96,21 @@ export default function NavBar() {
     };
   }, []);
 
+
+  const [userInfo, setUserInfo] = useState(null);
+
+  useEffect(() => {
+    if (user) {
+    (async () => {
+      console.log(user.email)
+      const req = await fetch(`http://localhost:3000/api/users?email=${user.email}`);
+      const res = await req.json()
+
+      setUserInfo(res)
+
+    })();
+      }
+  }, [user])
 
   return (
     <header className={`fixed top-0 left-0 z-50 w-full bg-beige transition-opacity duration-300 ${isVisible ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
@@ -119,12 +139,14 @@ export default function NavBar() {
             <div className="relative group">
               <button className="flex items-center space-x-2 focus:outline-none text-beige">
                 <FaUser className="text-beige" />
-                <span className="text-beige">Witaj, {user.displayName}</span>
+                <span className="text-beige">Witaj, {user.displayName}{userInfo && userInfo.accountType == 3 && (' (Admin)'
+                )}{userInfo && userInfo.accountType == 2 && (' (Wydawca)'
+                )}</span>
                 <div className="flex items-center space-x-2">
                   <svg className="w-4 h-4 ml-1 text-beige" fill="none" stroke="#f5e6c8" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 0v100"></path>
                   </svg>
-                  <span className="text-dark-beige">3</span>
+                  <span className="text-dark-beige">{userInfo ? userInfo.creditsNumber : ''}</span>
                   <img src="/photos/gem_symbol_light.png" alt="gem" className="w-6 h-6" />
                 </div>
                 <svg className="w-4 h-4 ml-1 text-beige" fill="none" stroke="#f5e6c8" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -134,6 +156,10 @@ export default function NavBar() {
               <div className="absolute top-full right-0 hidden bg-beige rounded-md border border-green-950 shadow-lg group-hover:block z-50">
                 <Link href="/comps/history" className="block px-4 py-2 text-green">Historia transakcji</Link>
                 <Link href="/comps/konto" className="block px-4 py-2 text-green">Moje konto</Link>
+                {userInfo && userInfo.accountType > 1 && (
+                <Link href="/comps/edit-products" className="block px-4 py-2 text-green">Edytuj produkty  </Link>
+                )}
+
                 <button onClick={handleLogout} className="block w-full text-left px-4 py-2 text-black hover:bg-gray-100">Wyloguj</button>
               </div>
 

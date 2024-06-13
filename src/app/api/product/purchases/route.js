@@ -29,6 +29,7 @@ export async function GET(request) {
             user: {
                 id: purchase.user.id,
                 login: purchase.user.login,
+                email: purchase.user.email,
             },
             author: purchase.product.author,
             title: purchase.product.title,

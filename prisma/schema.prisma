@@ -22,8 +22,9 @@ model User {
   id                Int       @id @default(autoincrement())
   login             String
   email             String
-  subscriptionType  Int
+  subscriptionType  String @default("Nieaktywna")
   creditsNumber     Int
+  accountType       Int @default(1)
   purchases         Purchase[]
 }
 

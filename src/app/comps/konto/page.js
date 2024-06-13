@@ -2,31 +2,14 @@
 
 import { useState, useEffect } from 'react';
 import Link from "next/link";
+ import { auth, provider, signInWithPopup, onAuthStateChanged, signOut } from '../../../../utils/firebase';
 
 export default function Page({ params }) {
-    // Pobierz dane użytkownika i typ subskrypcji z API lub kontekstu
-    const [userData, setUserData] = useState({
-        email: '',
-        subscriptionType: ''
-    });
+
     const [showPopup, setShowPopup] = useState(false);
 
 
-    useEffect(() => {
-        // Przykładowe pobranie danych użytkownika i subskrypcji z API lub kontekstu
-        const fetchUserData = async () => {
-            try {
-                // Symulacja pobierania danych z API
-                const response = await fetch('/api/userdata');
-                const data = await response.json();
-                setUserData(data);
-            } catch (error) {
-                console.error('Błąd pobierania danych:', error);
-            }
-        };
 
-        fetchUserData();
-    }, []);
 
     // Obsługa anulowania subskrypcji
     const handleCancelSubscription = () => {
@@ -40,6 +23,49 @@ export default function Page({ params }) {
     const handleSubRemoval = () => {
         ///coś tu trzeba zrobić
     };
+
+    // const user = auth.currentUser;
+    // console.log(user);
+    // const [userInfo, setUserInfo] = useState(null);
+    //
+    // useEffect(() => {
+    //     if (user) {
+    //         (async () => {
+    //             console.log(user.email)
+    //             const req = await fetch(`http://localhost:3000/api/users?email=${user.email}`);
+    //             const res = await req.json()
+    //
+    //             setUserInfo(res)
+    //
+    //         })();
+    //     }
+    // }, [user])
+
+    const [googleUser, setGoogleUser] = useState(null);
+
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            setGoogleUser(user);
+
+        });
+        return unsubscribe;
+    }, []);
+
+
+
+    const [databaseUserInfo, setDatabaseUserInfo] = useState(null);
+
+    useEffect(() => {
+        if (googleUser) {
+            (async () => {
+                const req = await fetch(`http://localhost:3000/api/users?email=${googleUser.email}`);
+                const res = await req.json()
+
+                setDatabaseUserInfo(res)
+
+            })();
+        }
+    }, [googleUser])
 
     return (
         <main className='min-h-screen bg-dark-beige h-auto'>
@@ -56,8 +82,8 @@ export default function Page({ params }) {
             </div>
             <div className="flex flex-col items-center justify-center">
                 <h1 className="text-7xl font-bold text-green-b mb-4">Moje konto</h1>
-                <p className="mb-2 text-3xl text-green-b">Email: {userData.email}</p>
-                <p className="mb-4 text-3xl text-green-b">Typ subskrypcji: {userData.subscriptionType}</p>
+                <p className="mb-2 text-3xl text-green-b">Email: {googleUser ? googleUser.email : ''}</p>
+                <p className="mb-4 text-3xl text-green-b">Typ subskrypcji: {databaseUserInfo ? databaseUserInfo.subscriptionType : 'Nieaktywna'}</p>
                 <button onClick={handleCancelSubscription} className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
                     Anuluj subskrypcję
                 </button>

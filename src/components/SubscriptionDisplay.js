@@ -9,7 +9,7 @@ import { FaUser, FaBars, FaChevronDown } from 'react-icons/fa';
 import { auth, provider, signInWithPopup, onAuthStateChanged, signOut } from '../../utils/firebase';
 
 
-const SubscriptionDisplay = ({ id, isActive, setActiveSubIndex }) => {
+const SubscriptionDisplay = ({ id }) => {
     //const [paypalButtonCreated, setPaypalButtonCreated] = useState(false);
     const selectedSub = subs[id];
     const [user, setUser] = useState(null);
@@ -24,10 +24,14 @@ const SubscriptionDisplay = ({ id, isActive, setActiveSubIndex }) => {
         const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
             if (currentUser) {
                 setUser(currentUser);
-                const req = await fetch(`http://localhost:3000/api/getSubscription/?email=${currentUser.email}`);
-                const data = await req.json();
-                setSubscriptionType(data.subscriptionType);
-                console.log("jest uzytkownik");
+                try {
+                    const req = await fetch(`http://localhost:3000/api/getSubscription/?email=${currentUser.email}`);
+                    const data = await req.json();
+                    setSubscriptionType(data.subscriptionType);
+                    console.log("jest uzytkownik");
+                } catch (error) {
+                    console.error("Error logging in: ", error);
+                }
             } else {
                 setUser(null);
                 setSubscriptionType("Nieaktywna");
@@ -72,8 +76,6 @@ const SubscriptionDisplay = ({ id, isActive, setActiveSubIndex }) => {
                 creditsNumber: selectedSub.credits,
             }),
         });
-
-
 
         setShowConfirmPopup(false);
         setShowPurchasedPopup(true); // Pokaż popup po udanym wysłaniu

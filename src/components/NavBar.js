@@ -51,7 +51,7 @@ export default function NavBar() {
     try {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
-      await fetch('/api/checkUser', {
+      await fetch('http://localhost:3000/api/users', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

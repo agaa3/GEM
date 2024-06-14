@@ -5,12 +5,6 @@ import SubscriptionDisplay from "@/components/SubscriptionDisplay";
 import Link from "next/link";
 
 const SubscriptionsPage = () => {
-    const [activeSubIndex, setActiveSubIndex] = useState(null);
-
-    const handleSetActiveSubIndex = (index) => {
-        setActiveSubIndex(prevIndex => (prevIndex === index ? null : index));
-    };
-
     return (
         <main className='min-h-screen bg-dark-beige'>
             <div className='h-32 bg-opacity-100'></div>
@@ -24,10 +18,8 @@ const SubscriptionsPage = () => {
             <div className="flex flex-wrap justify-center gap-8 p-8 w-[90%] mx-auto">
                 {subs.map((sub, index) => (
                     <SubscriptionDisplay 
-                        key={index} 
-                        id={index} 
-                        isActive={activeSubIndex === index} 
-                        setActiveSubIndex={handleSetActiveSubIndex} 
+                        key={index}
+                        id={index}
                     />
                 ))}
             </div>

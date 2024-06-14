@@ -12,15 +12,12 @@ export async function GET(request) {
     }
 
     try {
-        const user = await prisma.user.findUnique({
+        const user = await prisma.user.findFirst({
             where: { email },
         });
-        console.log("tutak");
         if (!user) {
             return NextResponse.json({ error: 'User not found' }, { status: 404 });
         }
-        console.log("tutak132");
-
         return NextResponse.json({ user });
     } catch (error) {
         console.error("Błąd pobierania danych:", error);

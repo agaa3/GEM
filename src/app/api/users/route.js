@@ -10,15 +10,15 @@ export async function handler(req, res) {
 
     if (req.method === 'POST') {
         try {
-            let user = await prisma.user.findUnique({
+            let user = await prisma.user.findFirst({
                 where: { email },
             });
 
             if (!user) {
                 user = await prisma.user.create({
                     data: {
-                        email,
                         login: displayName,
+                        email: email,
                         subscriptionType: "Nieaktywna",
                         creditsNumber: 0,
                         accountType: 1,

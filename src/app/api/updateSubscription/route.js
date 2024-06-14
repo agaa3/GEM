@@ -2,27 +2,33 @@ import { NextResponse } from 'next/server';
 
 import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
-export async function handler(req, res) {
-    const { email, subscriptionType, creditsNumber } = req.body;
-    console.log(email);
-    console.log(subscriptionType);
-    console.log(creditsNumber);
 
-    if (req.method === 'PUT') {
-        try {
-            const user = await prisma.user.update({
-                where: { email },
-                data: {
-                    subscriptionType,
-                    creditsNumber,
-                },
-            });
-            return NextResponse.json({ user });
+export async function PUT(request) {
+    try {
 
-        } catch (error) {
-            res.status(500).json({ error: 'Internal Server Error' });
+        const body = await request.json();  // Parse the request body
+        const { id, email, subscriptionType, creditsNumber } = body;
+        console.log(id);
+        console.log(subscriptionType);
+        console.log(creditsNumber);
+        if (!email || !subscriptionType || creditsNumber === undefined) {
+            return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
         }
-    } else {
-        res.status(405).json({ error: 'Method Not Allowed' });
+
+        // Update the user using their unique id
+        const updatedUser = await prisma.user.update({
+            where: { id: user.id },
+            data: {
+                subscriptionType: subscriptionType,
+                creditsNumber: creditsNumber,
+            },
+        });
+
+
+            return NextResponse.json({ updatedUser });
+
+    } catch (error) {
+        console.error("Error updating user:", error);
+        return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
     }
 }

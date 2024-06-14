@@ -28,7 +28,6 @@ const SubscriptionDisplay = ({ id }) => {
                     const req = await fetch(`http://localhost:3000/api/getSubscription/?email=${currentUser.email}`);
                     const data = await req.json();
                     setSubscriptionType(data.subscriptionType);
-                    console.log("jest uzytkownik");
                 } catch (error) {
                     console.error("Error logging in: ", error);
                 }
@@ -42,12 +41,13 @@ const SubscriptionDisplay = ({ id }) => {
     }, []);
 
     const handleClick = () => {
+        console.log(subscriptionType);
         if (!user) {
             setShowNotLoggedPopup(true); // Pokaż popup po udanym wysłaniu
             setTimeout(() => {
                 setShowNotLoggedPopup(false);
             }, 3000);
-        } else if(subscriptionType === "Nieaktywna"){
+        } else if(subscriptionType === "Nieaktywna" || subscriptionType === undefined){
             setShowConfirmPopup(true);
         } else {
             setShowHaveSubPopup(true); // Pokaż popup po udanym wysłaniu
@@ -65,23 +65,29 @@ const SubscriptionDisplay = ({ id }) => {
         console.log(selectedSub.name);
         console.log(selectedSub.credits);
 
-        await fetch('http://localhost:3000/api/updateSubscription/', {
+        const response = await fetch('http://localhost:3000/api/updateSubscription/', {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
+                id: user.id,
                 email: user.email,
                 subscriptionType: selectedSub.name,
                 creditsNumber: selectedSub.credits,
             }),
         });
+        if(response.ok){
+            setShowConfirmPopup(false);
+            setShowPurchasedPopup(true); // Pokaż popup po udanym wysłaniu
+            setTimeout(() => {
+                setShowPurchasedPopup(false);
+            }, 3000);
+        } else {
+            const errorData = await response.json();
+            console.error('Error:', errorData);
+        }
 
-        setShowConfirmPopup(false);
-        setShowPurchasedPopup(true); // Pokaż popup po udanym wysłaniu
-        setTimeout(() => {
-            setShowPurchasedPopup(false);
-        }, 3000);
     };
     const handleDeny = () => {
         setShowConfirmPopup(false);

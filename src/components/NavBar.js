@@ -49,7 +49,17 @@ export default function NavBar() {
 
   const handleLogin = async () => {
     try {
-      await signInWithPopup(auth, provider);
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+      await fetch('/api/checkUser', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: user.email, displayName: user.displayName }),
+      });
+
+      //await signInWithPopup(auth, provider);
       //sczytanie liczby kredytów z bazy dla tego użytkownika
       // lub jeśli go nie ma to dodanie rekordu z nim
 

@@ -1,11 +1,17 @@
 import Image from "next/image"
 import {useEffect, useState} from "react";
 import Link from "next/link";
+import {useRouter} from "next/navigation";
+import {auth, onAuthStateChanged} from "../../utils/firebase";
 
 export default function Product(props) {
     const [showChosenPopup, setShowChosenPopup] = useState(false);
     const [showPurchasedPopup, setShowPurchasedPopup] = useState(false);
     const [showFailedPopup, setShowFailedPopup] = useState(false);
+
+    const product= props.product; // to zeby ladniej przekazywac propsy TODO
+
+    const router = useRouter();
 
     //info o liczbie kredytów
     const credits = 3;  //to brać z bazy/navbaru
@@ -37,6 +43,58 @@ export default function Product(props) {
     const handleDeny = () => {
         setShowChosenPopup(false);
     };
+
+    const handleDelete = async () => {
+        if (!confirm("Are you sure you want to delete this product?")) {
+            return;
+        }
+
+        const res = await fetch(`http://localhost:3000/api/product/`, {
+            method: "DELETE",
+            body: JSON.stringify({ id: props.id }),
+        });
+
+        if (res.status === 200) {
+            window.location.reload()
+        }
+    };
+
+
+    const handleEdit = async () => {
+
+      router.push(`/comps/edit-products/edit?data=${JSON.stringify(props.product)}`)
+    };
+
+
+
+
+    const [googleUser, setGoogleUser] = useState(null);
+
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            setGoogleUser(user);
+
+        });
+        return unsubscribe;
+    }, []);
+
+
+
+    const [databaseUserInfo, setDatabaseUserInfo] = useState(null);
+
+    useEffect(() => {
+        if (googleUser) {
+            (async () => {
+                const req = await fetch(`http://localhost:3000/api/users?email=${googleUser.email}`);
+                const res = await req.json()
+
+                setDatabaseUserInfo(res)
+
+            })();
+        }
+    }, [googleUser])
+
+
 
 
     return (
@@ -77,9 +135,22 @@ export default function Product(props) {
                 </div>
                 <div className="flex flex-col justify-center p-4">
                     {/*<Link href={} className="px-15 text-green">*/}
-                    <button onClick={handleClick} className="mt-4 bg-button text-button px-4 py-2 rounded border border-#7F6E4D border-3" style={{ width: '200px' }}>
+                    {(props.edit ===undefined) && <button onClick={handleClick}
+                             className="mt-4 bg-button text-button px-4 py-2 rounded border border-#7F6E4D border-3"
+                             style={{width: '200px'}}>
                         Kup teraz!
-                    </button>
+                    </button>}
+
+                    {props.edit === true && <button onClick={handleEdit}
+                                                     className="mt-4 bg-button text-button px-4 py-2 rounded border border-#7F6E4D border-3"
+                                                     style={{width: '200px'}}>
+                        Edytuj
+                    </button>}{props.edit === true && databaseUserInfo && databaseUserInfo.accountType === 3 && <button onClick={handleDelete}
+                                                               className="mt-4 bg-remove text-button px-4 py-2 rounded border border-#7F6E4D border-3"
+                                                               style={{width: '200px'}}>
+                    Usuń
+                    </button>}
+
                     {showChosenPopup && (
                         <div className="fixed z-40 top-0 left-0 w-full h-full flex items-center justify-center">
                             <div className="bg-green text-beige text-centered h-64 w-[100%] px-4 py-2 rounded flex items-center justify-center" >

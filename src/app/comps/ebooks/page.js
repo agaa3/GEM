@@ -9,12 +9,7 @@ import Link from "next/link";
 export default function Page({ params }) {
     const [productsInfo, setProductsInfo] = useState([])
 
-    // const [product, setProduct] = useState({
-    //     author: '',
-    //     title: '',
-    //     category: '',
-    //     price: '',
-    // });
+
 
 
 

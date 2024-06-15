@@ -6,33 +6,35 @@ import Product from '@/components/Product'
 import ResponsiveEmbed from 'react-responsive-embed'
 import Link from "next/link";
 import { useRouter } from 'next/router';
+import {useSearchParams} from "next/navigation";
 
-export default function Page({ searchString }) {
+export default function Page({}) {
+
+    // const router = useRouter();
+    // const { searchString } = router.query;
+    const searchParams = useSearchParams();
+    const searchString = searchParams.get('searchString');
+
     const [productsInfo, setProductsInfo] = useState([])
 
-    const [product, setProduct] = useState({
-        author: '',
-        title: '',
-        category: '',
-        price: '',
-    });
+
+
 
     useEffect(() => {
-        const searchQuery = "k"; // Twój wyszukiwany ciąg znaków
-        console.log(searchString);
+    if (searchString) {
+        (async () => {
 
-        const fetchData = async () => {
-            try {
-                const req = await fetch(`http://localhost:3000/api/product/search?query=${searchQuery}`);
-                const res = await req.json();
-                setProductsInfo(res.product);
-            } catch (error) {
-                console.error("Błąd pobierania danych:", error);
-            }
-        };
+            const req = await fetch(`http://localhost:3000/api/product/search?query=${searchString}`)
+            const res = await req.json()
 
-        fetchData();
-    }, []);
+            setProductsInfo(res.product)
+        
+        })();
+        
+        }
+    }, [searchString])
+
+
 
     return (
 
@@ -46,6 +48,7 @@ export default function Page({ searchString }) {
                         <Link href="/comps/search" className="block px-4 py-2 text-green">Wyszukiwanie</Link>
                     </div>
                 </div>
+
                 <div className="flex flex-col md:flex-row items-start justify-center gap-8 p-8 w-[90%] mx-auto">
                     <div className='bg-opacity-50 rounded-lg bg-neutral-600 md:basis-3/4'>
 

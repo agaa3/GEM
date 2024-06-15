@@ -117,6 +117,14 @@ a:hover {
     background-color: #25371f;
 }
 
+.bg-add {
+    background-color: #4b8838;
+}
+
+.bg-remove {
+    background-color: #7a3535;
+}
+
 .bg-button:hover {
     background-color: #7F6E4D;
 }
@@ -126,6 +134,10 @@ a:hover {
 }
 
 .text-green {
+    color: #25371f;
+}
+
+.text-gg {
     color: #25371f;
 }
 

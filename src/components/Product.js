@@ -152,37 +152,6 @@ export default function Product(props) {
     };
 
 
-
-
-    const [googleUser, setGoogleUser] = useState(null);
-
-    useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (user) => {
-            setGoogleUser(user);
-
-        });
-        return unsubscribe;
-    }, []);
-
-
-
-    const [databaseUserInfo, setDatabaseUserInfo] = useState(null);
-
-    useEffect(() => {
-        if (googleUser) {
-            (async () => {
-                const req = await fetch(`http://localhost:3000/api/getUser?email=${googleUser.email}`);
-                const res = await req.json()
-
-                setDatabaseUserInfo(res)
-
-            })();
-        }
-    }, [googleUser])
-
-
-
-
     return (
         <div className="flex flex-col justify-center bg-beige p-4 ml-16">
             <div className="flex items-center">
@@ -231,7 +200,7 @@ export default function Product(props) {
                                                      className="mt-4 bg-button text-button px-4 py-2 rounded border border-#7F6E4D border-3"
                                                      style={{width: '200px'}}>
                         Edytuj
-                    </button>}{props.edit === true && databaseUserInfo && databaseUserInfo.accountType === 3 && <button onClick={handleDelete}
+                    </button>}{props.edit === true && userInfo && userInfo.accountType === 3 && <button onClick={handleDelete}
                                                                className="mt-4 bg-remove text-button px-4 py-2 rounded border border-#7F6E4D border-3"
                                                                style={{width: '200px'}}>
                     Usuń

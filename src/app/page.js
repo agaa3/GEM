@@ -43,7 +43,12 @@ export default function Page() {
                     <div className='bg-opacity-50 rounded-lg bg-neutral-600 md:basis-3/4'>
 
                         {productsInfo.map((product) => (
-                            <Product image={product.image} key={product.id} title={product.title} author={product.author} category={product.category} price={product.price}/>
+                            <Product image={product.image}
+                                     key={product.id}
+                                     id={product.id}
+                                     title={product.title}
+                                     author={product.author}
+                                     category={product.category} price={product.price}/>
                         ))}
 
                     </div>

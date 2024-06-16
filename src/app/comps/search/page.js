@@ -77,6 +77,15 @@ export default function Page({}) {
                     </select>
                 </div>
 
+                {/* Informacja o liczbie znalezionych produktów */}
+                <div className="bg-dark-beige p-4 pl-16 flex items-center justify-start mb-4">
+                    {productsInfo.length > 0 ? (
+                        <div className="text-green">Znaleziono {productsInfo.length} produktów:</div>
+                    ) : (
+                        <div className="text-green">Nie znaleziono produktów.</div>
+                    )}
+                </div>
+
                 <div className="flex flex-col md:flex-row items-start justify-center gap-8 p-8 w-[90%] mx-auto">
                     <div className='bg-opacity-50 rounded-lg bg-neutral-600 md:basis-3/4'>
 

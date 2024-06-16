@@ -85,7 +85,7 @@ export default function Product(props) {
     useEffect(() => {
         if (googleUser) {
             (async () => {
-                const req = await fetch(`http://localhost:3000/api/users?email=${googleUser.email}`);
+                const req = await fetch(`http://localhost:3000/api/getUser?email=${googleUser.email}`);
                 const res = await req.json()
 
                 setDatabaseUserInfo(res)

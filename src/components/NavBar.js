@@ -40,7 +40,7 @@ export default function NavBar() {
 
   const handleScroll = () => {
     const scrollY = window.scrollY;
-    if (scrollY > 80) { 
+    if (scrollY > 80) {
       setIsVisible(false);
     } else {
       setIsVisible(true);
@@ -51,7 +51,8 @@ export default function NavBar() {
     try {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
-      await fetch('http://localhost:3000/api/users', {
+      console.log(user);
+      await fetch('http://localhost:3000/api/user', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -113,7 +114,7 @@ export default function NavBar() {
     if (user) {
     (async () => {
       console.log(user.email)
-      const req = await fetch(`http://localhost:3000/api/users?email=${user.email}`);
+      const req = await fetch(`http://localhost:3000/api/getUser?email=${user.email}`);
       const res = await req.json()
 
       setUserInfo(res)
@@ -241,7 +242,7 @@ export default function NavBar() {
           <Link href="/comps/subscriptions" className="px-15 text-xl text-green">Subskrypcje</Link>
           <div className="relative group">
             <Link href="/comps/about" className="flex items-center px-15 text-xl text-green">
-              O nas 
+              O nas
               <svg className="w-4 h-4 mr-1 text-green" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
               </svg>

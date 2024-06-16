@@ -2,18 +2,23 @@
 import { useEffect, useState } from "react";
 import { subs } from "@/lib/subs";
 
-import { useRouter } from 'next/navigation';
-import { usePathname, useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from "next/link";
 import { FaUser, FaBars, FaChevronDown } from 'react-icons/fa';
 import { auth, provider, signInWithPopup, onAuthStateChanged, signOut } from '../../utils/firebase';
 
 
 const SubscriptionDisplay = ({ id }) => {
+    const searchParams = useSearchParams();
+    const data = searchParams.get('data');
+
+    const router=useRouter();
+
+    const [userInfo, setUserInfo] = useState(JSON.parse(data))
     //const [paypalButtonCreated, setPaypalButtonCreated] = useState(false);
     const selectedSub = subs[id];
     const [user, setUser] = useState(null);
-    const [subscriptionType, setSubscriptionType] = useState("Nieaktywna");
+    //const [subscriptionType, setSubscriptionType] = useState("Nieaktywna");
     const [showHaveSubPopup, setShowHaveSubPopup] = useState(false);
     const [showNotLoggedPopup, setShowNotLoggedPopup] = useState(false);
     const [showPurchasedPopup, setShowPurchasedPopup] = useState(false);
@@ -25,9 +30,11 @@ const SubscriptionDisplay = ({ id }) => {
             if (currentUser) {
                 setUser(currentUser);
                 try {
-                    const req = await fetch(`http://localhost:3000/api/getSubscription/?email=${currentUser.email}`);
+                    const req = await fetch(`http://localhost:3000/api/getUser/?email=${currentUser.email}`);
                     const data = await req.json();
-                    setSubscriptionType(data.subscriptionType);
+                    //console.log(data);
+                    setUserInfo(data.user);
+
                 } catch (error) {
                     console.error("Error logging in: ", error);
                 }
@@ -41,48 +48,42 @@ const SubscriptionDisplay = ({ id }) => {
     }, []);
 
     const handleClick = () => {
-        console.log(subscriptionType);
+        console.log(userInfo.subscriptionType);
         if (!user) {
             setShowNotLoggedPopup(true); // Pokaż popup po udanym wysłaniu
             setTimeout(() => {
                 setShowNotLoggedPopup(false);
             }, 3000);
-        } else if(subscriptionType === "Nieaktywna" || subscriptionType === undefined){
+        } else if(userInfo.subscriptionType === "Nieaktywna" || userInfo.subscriptionType === undefined){
             setShowConfirmPopup(true);
         } else {
             setShowHaveSubPopup(true); // Pokaż popup po udanym wysłaniu
             setTimeout(() => {
                 setShowHaveSubPopup(false);
             }, 3000);
-            setShowConfirmPopup(true);
+            //setShowConfirmPopup(true);
         }
 
     };
 
     const handleConfirm = async () => {
-        //zmiana rekordu użytkownika - dodanie typu subskrypcji i ilości kredytów
-        console.log(user.email);
-        console.log(selectedSub.name);
-        console.log(selectedSub.credits);
+        const updatedUser = { ...userInfo,
+            subscriptionType: selectedSub.name,
+            creditsNumber: userInfo.creditsNumber + selectedSub.credits};
+        /*console.log(updatedUser.subscriptionType);
+        console.log(updatedUser.id);
+        console.log(updatedUser.email);
+        console.log(updatedUser.login);*/
 
-        const response = await fetch('http://localhost:3000/api/updateSubscription/', {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                id: user.id,
-                email: user.email,
-                subscriptionType: selectedSub.name,
-                creditsNumber: selectedSub.credits,
-            }),
-        });
-        if(response.ok){
+        const req = await fetch(`http://localhost:3000/api/user/`, {method: 'PUT', body: JSON.stringify(updatedUser)})
+
+        if (req.status === 200) {
             setShowConfirmPopup(false);
             setShowPurchasedPopup(true); // Pokaż popup po udanym wysłaniu
             setTimeout(() => {
                 setShowPurchasedPopup(false);
             }, 3000);
+            router.push("/");
         } else {
             const errorData = await response.json();
             console.error('Error:', errorData);

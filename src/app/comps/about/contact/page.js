@@ -19,6 +19,8 @@ export default function Page() {
     const [showSuccessPopup, setShowSuccessPopup] = useState(false);
     const [isTermsAccepted, setIsTermsAccepted] = useState(false);
 
+    const [showTermsErrorPopup, setShowTermsErrorPopup] = useState(false);
+
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
         setFormData({
@@ -31,14 +33,20 @@ export default function Page() {
         setIsTermsAccepted(e.target.checked);
     };
 
-    const isFormValid = () => {
-        return formData.name && formData.email && formData.subject && formData.message && isTermsAccepted;
-    };
+    // const isFormValid = () => {
+    //     return formData.name && formData.email && formData.subject && formData.message && isTermsAccepted;
+    // };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!isFormValid()) return;
+        if (!isTermsAccepted) {
+            setShowTermsErrorPopup(true);
+            setTimeout(() => {
+                setShowTermsErrorPopup(false);
+            }, 3000);
+            return;
+        }
 
         // Symulacja udanego wysłania formularza i czyszczenie inputów
         setShowSuccessPopup(true);
@@ -50,7 +58,7 @@ export default function Page() {
         });
         setIsTermsAccepted(false);
 
-        // Wyczyszczenie popupu po 3 sekundach - za szybko to jakos znika uchhhhhhh
+        // Wyczyszczenie popupu po 3 sekundach
         setTimeout(() => {
             setShowSuccessPopup(false);
         }, 2000);
@@ -58,7 +66,7 @@ export default function Page() {
         // Symulacja rzeczywistego wysłania danych do serwera (zakomentowana)
         /*
         e.preventDefault();
-    
+
         try {
             const response = await fetch('/api/contact', {
                 method: 'POST',
@@ -67,7 +75,7 @@ export default function Page() {
                 },
                 body: JSON.stringify(formData),
             });
-    
+
             if (response.ok) {
                 const result = await response.json();
                 setResponseMessage(result.message);
@@ -75,7 +83,7 @@ export default function Page() {
                 setTimeout(() => {
                     setShowSuccessPopup(false);
                 }, 3000);
-    
+
                 // Wyczyszczenie inputów po udanym wysłaniu
                 setFormData({
                     name: '',
@@ -200,16 +208,26 @@ export default function Page() {
                     </div>
                     <div className="text-center">
                         <button type="submit"
-                                className="mt-4 bg-button text-button px-4 py-2 rounded border border-#7F6E4D border-3" style={{ width: '200px' }} disabled={!isFormValid()}>
+                                className="mt-4 bg-button text-button px-4 py-2 rounded border border-#7F6E4D border-3" style={{ width: '200px' }} >
                             Wyślij
                         </button>
                     </div>
                 </form>
                 {/* Popup po udanym wysłaniu */}
+
                 {showSuccessPopup && (
                     <div className="fixed z-40 top-0 left-0 w-full h-full flex items-center justify-center">
                         <div className="bg-green text-beige text-centered h-64 w-[50%] px-4 py-2 rounded flex items-center justify-center" >
                             <p className="text-center text-2xl">Udało się wysłać wiadomość!</p>
+                        </div>
+                    </div>
+                )}
+
+
+                {showTermsErrorPopup && (
+                    <div className="fixed z-40 top-0 left-0 w-full h-full flex items-center justify-center">
+                        <div className="bg-green text-beige text-centered h-64 w-[50%] px-4 py-2 rounded flex items-center justify-center">
+                            <p className="text-center text-2xl">Musisz zaakceptować regulamin, aby wysłać formularz.</p>
                         </div>
                     </div>
                 )}

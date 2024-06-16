@@ -47,6 +47,15 @@ export async function GET(request) {
     }
 }
 
+export async function POST(request) {
+    const data = await request.json();
+
+    const res = await prisma.product.create({
+        data:data
+    });
+
+    return NextResponse.json({ ...res })
+}
 
 // export async function POST(request) {
 //     const req = await request.json();

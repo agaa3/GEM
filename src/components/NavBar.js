@@ -117,7 +117,7 @@ export default function NavBar() {
       const req = await fetch(`http://localhost:3000/api/getUser?email=${user.email}`);
       const res = await req.json()
 
-      setUserInfo(res)
+      setUserInfo(res.user)
 
     })();
       }

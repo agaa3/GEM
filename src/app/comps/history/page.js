@@ -6,6 +6,7 @@ import Purchase from '@/components/Purchase'
 import ResponsiveEmbed from 'react-responsive-embed'
 import Link from "next/link";
 import {auth, onAuthStateChanged} from "../../../../utils/firebase";
+import Product from "@/components/Product";
 
 export default function Page({ params }) {
     const [purchasesInfo, setPurchasesInfo] = useState([])
@@ -28,10 +29,10 @@ export default function Page({ params }) {
     useEffect(() => {
         if (googleUser) {
             (async () => {
-                const req = await fetch(`http://localhost:3000/api/users?email=${googleUser.email}`);
+                const req = await fetch(`http://localhost:3000/api/getUser?email=${googleUser.email}`);
                 const res = await req.json()
 
-                setDatabaseUserInfo(res)
+                setDatabaseUserInfo(res.user)
 
             })();
         }
@@ -40,10 +41,8 @@ export default function Page({ params }) {
 
 
     useEffect(() => {
-        
         if (databaseUserInfo) {
             (async () => {
-
                 const req = await fetch(`http://localhost:3000/api/product/purchases?userID=${databaseUserInfo.id}`);
                 const res = await req.json()
 

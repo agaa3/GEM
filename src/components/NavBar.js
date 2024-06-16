@@ -150,9 +150,11 @@ export default function NavBar() {
             <div className="relative group">
               <button className="flex items-center space-x-2 focus:outline-none text-beige">
                 <FaUser className="text-beige" />
-                <span className="text-beige">Witaj, {user.displayName}{userInfo && userInfo.accountType == 3 && (' (Admin)'
-                )}{userInfo && userInfo.accountType == 2 && (' (Wydawca)'
-                )}</span>
+                <span className={`text-beige ${isMobileView ? 'hidden' : ''}`}>
+                  Witaj, {user.displayName}
+                  {userInfo && userInfo.accountType === 3 && ' (Admin)'}
+                  {userInfo && userInfo.accountType === 2 && ' (Wydawca)'}
+                </span>
                 <div className="flex items-center space-x-2">
                   <svg className="w-4 h-4 ml-1 text-beige" fill="none" stroke="#f5e6c8" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 0v100"></path>
@@ -168,12 +170,10 @@ export default function NavBar() {
                 <Link href="/comps/history" className="block px-4 py-2 text-green">Historia transakcji</Link>
                 <Link href="/comps/konto" className="block px-4 py-2 text-green">Moje konto</Link>
                 {userInfo && userInfo.accountType > 1 && (
-                <Link href="/comps/edit-products" className="block px-4 py-2 text-green">Edytuj produkty  </Link>
+                  <Link href="/comps/edit-products" className="block px-4 py-2 text-green">Edytuj produkty</Link>
                 )}
-
                 <button onClick={handleLogout} className="block w-full text-left px-4 py-2 text-black hover:bg-gray-100">Wyloguj</button>
               </div>
-
             </div>
           ) : (
             <button onClick={handleLogin} className="flex items-center space-x-2 focus:outline-none text-beige">
@@ -182,20 +182,21 @@ export default function NavBar() {
             </button>
           )}
         </div>
-        <div className="md:hidden">
-          <FaBars className="text-beige cursor-pointer" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} />
-        </div>
+
+        <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="md:hidden focus:outline-none">
+          <FaBars className="text-beige h-8 w-8" />
+        </button>
       </div>
 
       {isMobileMenuOpen && (
         <nav className="bg-beige py-4 md:hidden">
           <div className="w-full flex justify-center items-center mt-4">
             <input type="text"
-                    placeholder="Na co masz dziś ochotę?..."
-                    className="w-80 bg-transparent text-black pl-4 pr-2 py-2 border-b-4 border-black focus:outline-none focus:border-black mb-3"
-                    value={searchText} onChange={handleInputChange} onKeyPress={handleKeyPress}/>
-             <svg onClick={handleSearch} className="h-6 w-6 text-black cursor-pointer ml-2"
-                  fill="none" viewBox="0 0 24 24" stroke="#000000">
+                   placeholder="Na co masz dziś ochotę?..."
+                   className="w-80 bg-transparent text-black pl-4 pr-2 py-2 border-b-4 border-black focus:outline-none focus:border-black mb-3"
+                   value={searchText} onChange={handleInputChange} onKeyPress={handleKeyPress} />
+            <svg onClick={handleSearch} className="h-6 w-6 text-black cursor-pointer ml-2"
+                 fill="none" viewBox="0 0 24 24" stroke="#000000">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
           </div>
@@ -221,7 +222,7 @@ export default function NavBar() {
           </div>
         </nav>
       )}
-      {/* Normal Menu */}
+
       <nav className="bg-beige py-4 md:block hidden">
         <div className="w-full flex justify-around">
           <div className="relative group">

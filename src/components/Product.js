@@ -1,23 +1,53 @@
 import Image from "next/image"
 import {useEffect, useState} from "react";
 import Link from "next/link";
-import {useRouter} from "next/navigation";
+import {useRouter, useSearchParams} from "next/navigation";
 import {auth, onAuthStateChanged} from "../../utils/firebase";
 
 export default function Product(props) {
+    const searchParams = useSearchParams();
+    const data = searchParams.get('data');
+
+    const router=useRouter();
+    const [user, setUser] = useState(null);
+    const [userInfo, setUserInfo] = useState(JSON.parse(data))
     const [showChosenPopup, setShowChosenPopup] = useState(false);
     const [showPurchasedPopup, setShowPurchasedPopup] = useState(false);
     const [showFailedPopup, setShowFailedPopup] = useState(false);
+    const [showNotLoggedPopup, setShowNotLoggedPopup] = useState(false);
 
     const product= props.product; // to zeby ladniej przekazywac propsy TODO
 
-    const router = useRouter();
+    const checkUser = () => {
+        const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+            if (currentUser) {
+                setUser(currentUser);
+                try {
+                    const req = await fetch(`http://localhost:3000/api/getUser/?email=${currentUser.email}`);
+                    const data = await req.json();
+                    setUserInfo(data.user);
 
-    //info o liczbie kredytów
-    const credits = 3;  //to brać z bazy/navbaru
+                } catch (error) {
+                    console.error("Error logging in: ", error);
+                }
+            } else {
+                setUser(null);
+            }
+        });
+
+        return () => unsubscribe();
+    };
 
     const handleClick = () => {
-        if(credits < props.price){
+        checkUser();
+        console.log(userInfo);
+
+        if(!user) {
+            setShowNotLoggedPopup(true);
+            setTimeout(() => {
+                setShowNotLoggedPopup(false);
+            }, 3000);
+        } else if(userInfo.creditsNumber < props.price){
             setShowFailedPopup(true);
             setTimeout(() => {
                 setShowFailedPopup(false);
@@ -32,12 +62,23 @@ export default function Product(props) {
         setShowPurchasedPopup(false);
     }
 
-    const handleConfirm = () => {
-        const newCredits = credits - props.price;
-        //updateCredits(newCredits); zmiana stanu konta użytkownika w bazie też
+    const handleConfirm = async () => {
+        const updatedUser = { ...userInfo,
+            creditsNumber: userInfo.creditsNumber - props.price};
+        const req = await fetch(`http://localhost:3000/api/user/`, {method: 'PUT', body: JSON.stringify(updatedUser)})
 
-        setShowChosenPopup(false);
-        setShowPurchasedPopup(true); // Pokaż popup po udanym wysłaniu
+        if (req.status === 200) {
+            //TODO dodać wpis do bazy Purchase
+            setShowChosenPopup(false);
+            setShowPurchasedPopup(true); // Pokaż popup po udanym wysłaniu
+            setTimeout(() => {
+                setShowPurchasedPopup(false);
+            }, 3000);
+        } else {
+            const errorData = await response.json();
+            console.error('Error:', errorData);
+        }
+
     };
 
     const handleDeny = () => {
@@ -207,6 +248,13 @@ export default function Product(props) {
                         <div className="fixed z-50 top-0 left-0 w-full h-full flex items-center justify-center">
                             <div className="bg-green text-beige text-centered h-64 w-[50%] px-4 py-2 rounded flex items-center justify-center" >
                                 <p className="text-center text-2xl">Masz za mało kredytów!</p>
+                            </div>
+                        </div>
+                    )}
+                    {showNotLoggedPopup && (
+                        <div className="fixed z-50 top-0 left-0 w-full h-full flex items-center justify-center">
+                            <div className="bg-green text-beige text-centered h-64 w-[50%] px-4 py-2 rounded flex items-center justify-center" >
+                                <p className="text-center text-2xl">Aby wykupić subskrypcję musisz być zalogowany!</p>
                             </div>
                         </div>
                     )}

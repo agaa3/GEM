@@ -129,6 +129,10 @@ a:hover {
     background-color: #7F6E4D;
 }
 
+.bg-button:disabled {
+    background-color: #7F6E4D;
+}
+
 .text-button {
     color: #f5e6c8;
 }

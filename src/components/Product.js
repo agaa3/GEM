@@ -15,17 +15,10 @@ export default function Product(props) {
     const [showPurchasedPopup, setShowPurchasedPopup] = useState(false);
     const [showFailedPopup, setShowFailedPopup] = useState(false);
     const [showNotLoggedPopup, setShowNotLoggedPopup] = useState(false);
-
-    const product= props.product; // to zeby ladniej przekazywac propsy TODO
-
+    const [hasPurchased, setHasPurchased] = useState(false);
 
 
-
-
-
-
-
-    const checkUser = () => {
+    useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
             if (currentUser) {
                 setUser(currentUser);
@@ -33,7 +26,17 @@ export default function Product(props) {
                     const req = await fetch(`http://localhost:3000/api/getUser/?email=${currentUser.email}`);
                     const data = await req.json();
                     setUserInfo(data.user);
-
+                    //console.log(data.user.id);
+                    try {
+                        const response = await fetch(`http://localhost:3000/api/getPurchase/?userId=${data.user.id}&productId=${props.id}`);
+                        const data1 = await response.json();
+                        if(!(data1.purchases === null)){
+                            setHasPurchased(true);
+                        }
+                    } catch (error) {
+                        console.error("Error checking purchase: ", error);
+                        return false;
+                    }
                 } catch (error) {
                     console.error("Error logging in: ", error);
                 }
@@ -43,11 +46,11 @@ export default function Product(props) {
         });
 
         return () => unsubscribe();
-    };
+    }, []);
 
     const handleClick = () => {
-        checkUser();
         console.log(userInfo);
+        console.log(props.id);
 
         if(!user) {
             setShowNotLoggedPopup(true);
@@ -69,18 +72,19 @@ export default function Product(props) {
         setShowPurchasedPopup(false);
     }
 
-    const [productInfo, setProductInfo] = useState({
+    /*const [productInfo, setProductInfo] = useState({
         author :'',
         title :'',
         category :'',
         price :1,
         image: '/photos/',
         downloadURL :'/'
-    })
+    })*/
 
 
 
     const handleConfirm = async () => {
+
         try {
             // Update the user's creditsNumber
             const updatedUser = { ...userInfo, creditsNumber: userInfo.creditsNumber - props.price };
@@ -96,9 +100,9 @@ export default function Product(props) {
                     userId: userInfo.id,
                 };
 
-                console.log(purchaseData)
+                //console.log(purchaseData)
 
-                const purchaseResponse = await fetch(`http://localhost:3000/api/purchase/`, {
+                const purchaseResponse = await fetch(`http://localhost:3000/api/product/purchases/`, {
                     method: 'POST',
                     body: JSON.stringify(purchaseData),
                 });
@@ -218,12 +222,11 @@ export default function Product(props) {
                 </div>
                 <div className="flex flex-col justify-center p-4">
                     {/*<Link href={} className="px-15 text-green">*/}
-                    {(props.edit ===undefined) && <button onClick={handleClick}
+                    {(props.edit ===undefined) && <button disabled={hasPurchased} onClick={handleClick}
                              className="mt-4 bg-button text-button px-4 py-2 rounded border border-#7F6E4D border-3"
                              style={{width: '200px'}}>
                         Kup teraz!
                     </button>}
-
                     {props.edit === true && <button onClick={handleEdit}
                                                      className="mt-4 bg-button text-button px-4 py-2 rounded border border-#7F6E4D border-3"
                                                      style={{width: '200px'}}>

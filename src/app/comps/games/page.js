@@ -47,7 +47,13 @@ export default function Page({ params }) {
                         {/*<Product key={1} title={"bla bla bla"} author={"vfazbfgsbgs"} category={"ebooks"} price={3}/>*/}
 
                         {productsInfo.map((product) => (
-                            <Product image={product.image} key={product.id} title={product.title} author={product.author} category={product.category} price={product.price}/>
+                            <Product image={product.image}
+                                     id={product.id}
+                                     key={product.id}
+                                     title={product.title}
+                                     author={product.author}
+                                     category={product.category}
+                                     price={product.price}/>
                         ))}
 
                     </div>

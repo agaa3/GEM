@@ -18,6 +18,13 @@ export default function Product(props) {
 
     const product= props.product; // to zeby ladniej przekazywac propsy TODO
 
+
+
+
+
+
+
+
     const checkUser = () => {
         const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
             if (currentUser) {
@@ -62,23 +69,57 @@ export default function Product(props) {
         setShowPurchasedPopup(false);
     }
 
+    const [productInfo, setProductInfo] = useState({
+        author :'',
+        title :'',
+        category :'',
+        price :1,
+        image: '/photos/',
+        downloadURL :'/'
+    })
+
+
+
     const handleConfirm = async () => {
-        const updatedUser = { ...userInfo,
-            creditsNumber: userInfo.creditsNumber - props.price};
-        const req = await fetch(`http://localhost:3000/api/user/`, {method: 'PUT', body: JSON.stringify(updatedUser)})
+        try {
+            // Update the user's creditsNumber
+            const updatedUser = { ...userInfo, creditsNumber: userInfo.creditsNumber - props.price };
+            const userResponse = await fetch(`http://localhost:3000/api/user/`, {
+                method: 'PUT',
+                body: JSON.stringify(updatedUser),
+            });
+            if (userResponse.status === 200) {
+                // Create a new purchase entry
+                const purchaseData = {
+                    date: new Date(),
+                    productId: props.id,
+                    userId: userInfo.id,
+                };
 
-        if (req.status === 200) {
-            //TODO dodać wpis do bazy Purchase
-            setShowChosenPopup(false);
-            setShowPurchasedPopup(true); // Pokaż popup po udanym wysłaniu
-            setTimeout(() => {
-                setShowPurchasedPopup(false);
-            }, 3000);
-        } else {
-            const errorData = await response.json();
-            console.error('Error:', errorData);
+                console.log(purchaseData)
+
+                const purchaseResponse = await fetch(`http://localhost:3000/api/purchase/`, {
+                    method: 'POST',
+                    body: JSON.stringify(purchaseData),
+                });
+
+                if (purchaseResponse.status === 200) {
+                    setShowChosenPopup(false);
+                    setShowPurchasedPopup(true);
+                    setTimeout(() => {
+                        setShowPurchasedPopup(false);
+                    }, 3000);
+                } else {
+                    const errorData = await purchaseResponse.json();
+                    console.error('Error creating purchase:', errorData);
+                }
+            } else {
+                const errorData = await userResponse.json();
+                console.error('Error updating user:', errorData);
+            }
+        } catch (error) {
+            console.error('Error in handleConfirm:', error);
         }
-
     };
 
     const handleDeny = () => {
@@ -169,6 +210,7 @@ export default function Product(props) {
                 <div className="flex flex-col justify-center p-4 w-[50%]">
                     <p className="text-xl text-green-b">{props.author}</p>
                     <p className="text-xl text-green-b">{props.title}</p>
+
                     <div className='flex'>
                         <span className="text-green-b text-3xl">{props.price}</span>
                         <img src="/photos/gem_symbol_dark.png" alt="gem" className="w-6 h-6 mt-1 ml-2" />

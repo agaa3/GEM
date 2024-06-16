@@ -50,11 +50,20 @@ export async function GET(request) {
 export async function POST(request) {
     const data = await request.json();
 
-    const res = await prisma.product.create({
-        data:data
-    });
+    try {
+        const purchase = await prisma.purchase.create({
+            data: {
+                date: data.date,
+                productId: data.productId,
+                userId: data.userId,
+            },
+        });
 
-    return NextResponse.json({ ...res })
+        return NextResponse.json(purchase);
+    } catch (error) {
+        console.error('Error creating purchase:', error);
+        return NextResponse.json({ error: 'Error creating purchase' }, { status: 500 });
+    }
 }
 
 // export async function POST(request) {

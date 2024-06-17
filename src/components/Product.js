@@ -192,7 +192,12 @@ export default function Product(props) {
                 </div>
                 <div className="flex flex-col justify-center p-4">
                     {/*<Link href={} className="px-15 text-green">*/}
-                    {(props.edit === undefined) && <button disabled={hasPurchased} onClick={handleClick}
+                    {((props.edit === undefined)&&!hasPurchased) && <button disabled={hasPurchased} onClick={handleClick}
+                                                           className="mt-4 bg-button text-button px-4 py-2 rounded border border-#7F6E4D border-3"
+                                                           style={{width: '200px'}}>
+                        Kupione
+                    </button>}
+                    {((props.edit === undefined)&&!hasPurchased) && <button disabled={hasPurchased} onClick={handleClick}
                                                            className="mt-4 bg-button text-button px-4 py-2 rounded border border-#7F6E4D border-3"
                                                            style={{width: '200px'}}>
                         Kup teraz!

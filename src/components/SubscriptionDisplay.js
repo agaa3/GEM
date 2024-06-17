@@ -40,7 +40,7 @@ const SubscriptionDisplay = ({ id }) => {
                 }
             } else {
                 setUser(null);
-                setSubscriptionType("Nieaktywna");
+                //setSubscriptionType("Nieaktywna");
             }
         });
 
